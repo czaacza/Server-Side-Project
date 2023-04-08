@@ -12,4 +12,9 @@ interface UserOutput {
   email: string;
 }
 
-export { User, UserOutput };
+interface UserLogin {
+  email: string;
+  password: string;
+}
+
+export { User, UserOutput, UserLogin };
