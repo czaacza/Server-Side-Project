@@ -14,11 +14,6 @@ h2 {
   margin-bottom: 20px;
 }
 
-.form-control::placeholder {
-  font-weight: 200;
-  color: #999;
-}
-
 /* navbar  */
 
 .navbar {
@@ -53,13 +48,33 @@ h2 {
   background-color: #3297d1;
 }
 
-.btn-secondary {
-  background-color: #5ce1e6;
+/* popup */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 500px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  display: none;
+}
+.popup-container {
+  position: relative;
+}
+.popup-close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
 }
 
-.btn-login {
-  padding: 12px 16px !important;
-  border-radius: 5px;
+.popup-container {
+  border-radius: 9px;
+  overflow: hidden;
 }
 
 modal-content {
@@ -68,8 +83,6 @@ modal-content {
 
 .modal-img-container {
   position: absolute;
-  border-top-left-radius: 9px;
-  border-bottom-left-radius: 9px;
   top: 0;
   left: 0;
   bottom: 0;
@@ -86,6 +99,12 @@ modal-content {
 .modal-form-container {
   padding-left: 52%;
 }
+
+/* .modal-body {
+  padding: 2rem;
+} */
+
+/* hero section */
 
 .hero-section {
   margin-top: 15vh;

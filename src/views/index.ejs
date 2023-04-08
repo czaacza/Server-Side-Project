@@ -4,8 +4,16 @@
     <%- include('head.ejs') %>
     <link rel="stylesheet" href="css/testimonials.css" />
     <link rel="stylesheet" href="css/products.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/popup.css" />
+    <link rel="stylesheet" href="css/signin.css" />
   </head>
   <body>
+    <div class="overlay"></div>
+
     <%- include('navbar.ejs') %>
 
     <!-- hero section -->
@@ -30,6 +38,8 @@
         </div>
       </div>
     </section>
+
+    <%- include('popup.ejs') %> <%- include('signin.ejs') %>
 
     <!-- product section -->
 
@@ -150,5 +160,8 @@
     </section>
 
     <%- include('bootstrap.ejs') %>
+
+    <script type="text/javascript" src="js/popup.js"></script>
+    <script type="text/javascript" src="js/signin.js"></script>
   </body>
 </html>
