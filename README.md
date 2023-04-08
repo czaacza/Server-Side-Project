@@ -8,6 +8,7 @@ Full stack e-commerce book store web application made as a part of Server-side S
 - MongoDB
 - GraphQL
 - REST
+- Bootstrap
 - passport.js
 - jsonwebtoken
 - stripe
