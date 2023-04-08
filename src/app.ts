@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 
 import { notFound, errorHandler } from './middlewares';
+import api from './api';
 
 const app = express();
 
@@ -29,5 +30,10 @@ app.get('/cart', (req: Request, res: Response) => {
 app.get('/checkout', (req: Request, res: Response) => {
   res.render('checkout', { title: 'Express' });
 });
+
+app.use('/api', api);
+
+app.use(notFound);
+app.use(errorHandler);
 
 export default app;

@@ -32,8 +32,14 @@ h2 {
   background-color: #3297d1;
 }
 
+/* hero section */
+
 .hero-section {
   margin-top: 15vh;
+}
+
+.hero-heading {
+  font-size: 48px;
 }
 
 .product-section {

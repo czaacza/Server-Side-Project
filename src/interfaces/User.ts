@@ -7,4 +7,9 @@ interface User extends Document {
   isAdmin: boolean;
 }
 
-export { User };
+interface UserOutput {
+  username: string;
+  email: string;
+}
+
+export { User, UserOutput };
