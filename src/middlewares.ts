@@ -22,4 +22,27 @@ const errorHandler = (
   });
 };
 
-export { notFound, errorHandler };
+const checkAuthenticated = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+
+  res.redirect('/login');
+};
+
+const checkNotAuthenticated = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/');
+  }
+  next();
+};
+
+export { notFound, errorHandler, checkAuthenticated, checkNotAuthenticated };

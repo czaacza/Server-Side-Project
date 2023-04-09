@@ -1,27 +1,12 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import userModel from '../models/userModel';
-import { login, register } from '../controllers/authController';
-import passport from '../../authentication';
-import { User } from '../../interfaces/User';
+import { register } from '../controllers/authController';
+import { checkNotAuthenticated } from '../../middlewares';
+const passport = require('passport').Passport;
+
+console.log(passport);
 
 const router = Router();
 
-router.post('/register', register);
-
-router.post('/login', passport.authenticate('local', {}));
-
-router.get(
-  '/logout',
-  function (req: Request, res: Response, next: NextFunction) {
-    console.log('logged in as: ', req.user);
-    req.logout(function (err) {
-      if (err) {
-        return next(err);
-      }
-      console.log('successfully logged out');
-      res.redirect('/');
-    });
-  }
-);
+router.post('/register', checkNotAuthenticated, register);
 
 export default router;

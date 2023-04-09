@@ -9,7 +9,7 @@
   border-radius: 9px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 20px;
-  display: block;
+  display: none;
   z-index: 101;
   animation-name: slideIn;
   animation-duration: 0.5s;

@@ -4,6 +4,7 @@ import userModel from '../models/userModel';
 import CustomError from '../../classes/CustomError';
 import { UserMessageResponse } from '../../interfaces/MessageResponse';
 import bcrypt from 'bcryptjs';
+import passport from 'passport';
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -43,33 +44,4 @@ const register = async (
   }
 };
 
-const login = async (
-  req: Request<{}, {}, User>,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const user = await userModel.findOne({ email: req.body.email });
-
-    if (!user) {
-      throw new CustomError('User not found', 404);
-    }
-
-    if (!bcrypt.compareSync(req.body.password, user.password)) {
-      throw new CustomError('Wrong credentials', 401);
-    }
-    const response: UserMessageResponse = {
-      message: 'User logged in',
-      user: {
-        username: user.username,
-        email: user.email,
-      },
-    };
-
-    res.status(200).json(response);
-  } catch (error) {
-    next(error);
-  }
-};
-
-export { register, login };
+export { register };

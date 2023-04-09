@@ -1,13 +1,20 @@
 import dotenv from 'dotenv';
-dotenv.config();
-import express, { Request, Response } from 'express';
-import session from 'express-session';
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
+import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
 
-import { notFound, errorHandler } from './middlewares';
+import { notFound, errorHandler, checkNotAuthenticated } from './middlewares';
 import api from './api';
+
+import flash from 'express-flash';
+import session from 'express-session';
+
+import passport from 'passport';
+const initializePassport = require('./authentication/passport-config');
 
 const app = express();
 
@@ -22,6 +29,18 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use(flash());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET as string,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+initializePassport(passport);
+
 app.get('/', (req: Request, res: Response) => {
   res.render('index', { title: 'Express' });
 });
@@ -35,6 +54,26 @@ app.get('/checkout', (req: Request, res: Response) => {
 });
 
 app.use('/api', api);
+
+app.post(
+  '/login',
+  checkNotAuthenticated,
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/404',
+    failureFlash: true,
+  })
+);
+
+app.get('/logout', function (req: Request, res: Response, next: NextFunction) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    console.log('successfully logged out');
+    res.redirect('/');
+  });
+});
 
 app.use(notFound);
 app.use(errorHandler);
