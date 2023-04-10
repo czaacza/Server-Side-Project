@@ -46,11 +46,15 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get('/cart', (req: Request, res: Response) => {
-  res.render('cart', { title: 'Express' });
+  res.render('cart', { user: req.user });
 });
 
 app.get('/checkout', (req: Request, res: Response) => {
-  res.render('checkout', { title: 'Express' });
+  res.render('checkout', { user: req.user });
+});
+
+app.get('/account', (req: Request, res: Response) => {
+  res.render('account', { user: req.user });
 });
 
 app.use('/api', api);

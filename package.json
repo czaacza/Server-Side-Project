@@ -48,6 +48,7 @@
     "@types/morgan": "^1.9.4",
     "@types/passport-jwt": "^3.0.8",
     "@types/passport-local": "^1.0.35",
+    "prettier-plugin-ejs": "^0.0.10",
     "typescript": "^5.0.3"
   }
 }
