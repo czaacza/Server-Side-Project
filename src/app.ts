@@ -42,7 +42,7 @@ app.use(passport.session());
 initializePassport(passport);
 
 app.get('/', (req: Request, res: Response) => {
-  res.render('index', { title: 'Express' });
+  res.render('index', { user: req.user });
 });
 
 app.get('/cart', (req: Request, res: Response) => {
@@ -60,7 +60,7 @@ app.post(
   checkNotAuthenticated,
   passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/404',
+    failureRedirect: '/',
     failureFlash: true,
   })
 );

@@ -1,4 +1,4 @@
-import { User } from '../../interfaces/User';
+import { User, UserOutput } from '../../interfaces/User';
 import { Request, Response, NextFunction } from 'express';
 import userModel from '../models/userModel';
 import CustomError from '../../classes/CustomError';
@@ -30,15 +30,12 @@ const register = async (
       throw new CustomError('Could not save user', 500);
     }
 
-    const response: UserMessageResponse = {
-      message: 'User created',
-      user: {
-        username: savedUser.username,
-        email: savedUser.email,
-      },
+    const userOutput: UserOutput = {
+      username: savedUser.username,
+      email: savedUser.email,
     };
 
-    res.status(201).json(response);
+    res.status(201).redirect('/');
   } catch (error) {
     next(error);
   }

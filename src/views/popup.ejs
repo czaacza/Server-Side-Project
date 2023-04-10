@@ -15,12 +15,13 @@
           alt="eBookery Logo"
         />
       </div>
-      <form>
+      <form action="http://localhost:3000/api/auth/register" method="POST">
         <div class="mb-3">
           <label for="signupName" class="form-label">Name</label>
           <input
             type="text"
             class="form-control"
+            name="username"
             id="signupName"
             placeholder="Enter your name"
             required
@@ -31,6 +32,7 @@
           <input
             type="email"
             class="form-control"
+            name="email"
             id="signupEmail"
             placeholder="Enter your email"
             required
@@ -41,6 +43,7 @@
           <input
             type="password"
             class="form-control"
+            name="password"
             id="signupPassword"
             placeholder="Enter your password"
             required

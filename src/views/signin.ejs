@@ -16,12 +16,13 @@
         />
       </div>
       <h5 class="text-center mt-4 sign-in-subtitle">Please sign in.</h5>
-      <form>
+      <form action="http://localhost:3000/login" method="POST">
         <div class="mb-3">
           <label for="signinEmail" class="form-label">Email address</label>
           <input
             type="email"
             class="form-control"
+            name="username"
             id="signinEmail"
             placeholder="Enter your email"
             required
@@ -32,6 +33,7 @@
           <input
             type="password"
             class="form-control"
+            name="password"
             id="signinPassword"
             placeholder="Enter your password"
             required
