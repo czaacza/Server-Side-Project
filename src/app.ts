@@ -6,6 +6,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
+import Logging from './utils/Logging';
 
 import { notFound, errorHandler, checkNotAuthenticated } from './middlewares';
 import api from './api';
@@ -13,8 +14,8 @@ import api from './api';
 import flash from 'express-flash';
 import session from 'express-session';
 
-import passport from 'passport';
-const initializePassport = require('./authentication/passport-config');
+import jwt from 'jsonwebtoken';
+import passport from './authentication/passport-config';
 
 const app = express();
 
@@ -37,11 +38,12 @@ app.use(
     saveUninitialized: false,
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
-initializePassport(passport);
 
 app.get('/', (req: Request, res: Response) => {
+  Logging.info(`req.user: ${req.user}`);
   res.render('index', { user: req.user });
 });
 
@@ -58,26 +60,6 @@ app.get('/account', (req: Request, res: Response) => {
 });
 
 app.use('/api', api);
-
-app.post(
-  '/login',
-  checkNotAuthenticated,
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/',
-    failureFlash: true,
-  })
-);
-
-app.get('/logout', function (req: Request, res: Response, next: NextFunction) {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    console.log('successfully logged out');
-    res.redirect('/');
-  });
-});
 
 app.use(notFound);
 app.use(errorHandler);

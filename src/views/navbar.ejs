@@ -27,6 +27,7 @@
       <li class="nav-item active">
         <a class="nav-link" href="#">Contact</a>
       </li>
+      <% if(user){ %>
       <li class="nav-item active">
         <a
           class="nav-link btn btn-account btn-primary"
@@ -35,6 +36,7 @@
           >My account</a
         >
       </li>
+      <% } %>
     </ul>
 
     <ul class="navbar-nav navbar-right">
@@ -57,6 +59,15 @@
         >
       </li>
 
+      <% } else { %>
+      <li class="nav-item active">
+        <a
+          class="nav-link btn btn-primary logout-btn"
+          id="logout-button"
+          href="/api/auth/logout"
+          >Log out</a
+        >
+      </li>
       <% } %>
 
       <li class="nav-item active cart-item">

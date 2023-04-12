@@ -2,9 +2,9 @@ import { User, UserOutput } from '../../interfaces/User';
 import { Request, Response, NextFunction } from 'express';
 import userModel from '../models/userModel';
 import CustomError from '../../classes/CustomError';
-import { UserMessageResponse } from '../../interfaces/MessageResponse';
 import bcrypt from 'bcryptjs';
-import passport from 'passport';
+import passport from '../../authentication/passport-config';
+import Logging from '../../utils/Logging';
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -13,7 +13,7 @@ const register = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log('body:', req.body);
+  Logging.info(`body:, ${req.body}`);
 
   const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
@@ -41,4 +41,30 @@ const register = async (
   }
 };
 
-export { register };
+const login = (req: Request, res: Response, next: NextFunction) => {
+  passport.authenticate('local', function (err: any, user: any) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.redirect('/');
+    }
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect('/');
+    });
+  })(req, res, next);
+};
+
+const logout = (req: Request, res: Response, next: NextFunction) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    Logging.info('successfully logged out');
+    res.redirect('/');
+  });
+};
+export { register, login, logout };
