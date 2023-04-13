@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import { User, UserOutput } from '../../interfaces/User';
 import { Request, Response, NextFunction } from 'express';
 import userModel from '../models/userModel';
@@ -42,18 +43,27 @@ const register = async (
 };
 
 const login = (req: Request, res: Response, next: NextFunction) => {
-  passport.authenticate('local', function (err: any, user: any) {
-    if (err) {
+  passport.authenticate('local', function (err: Error, user: User) {
+    if (err || !user) {
       return next(err);
-    }
-    if (!user) {
-      return res.redirect('/');
     }
     req.logIn(user, function (err) {
       if (err) {
         return next(err);
       }
-      return res.redirect('/');
+      console.log('user', user);
+
+      const token = jwt.sign(
+        { id: user._id, isAdmin: user.isAdmin },
+        process.env.JWT_SECRET as string
+      );
+
+      const userOutput: UserOutput = {
+        username: user.username,
+        email: user.email,
+      };
+
+      return res.render('index', { user: req.user });
     });
   })(req, res, next);
 };

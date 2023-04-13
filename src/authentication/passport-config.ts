@@ -1,4 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
+import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 import bcrypt from 'bcryptjs';
 import userModel from '../api/models/userModel';
 import passport from 'passport';
@@ -30,5 +31,17 @@ passport.deserializeUser(async (id: any, done: any) => {
     done(err);
   }
 });
+
+passport.use(
+  new JWTStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: 'asdf',
+    },
+    (jwtPayload, done) => {
+      done(null, jwtPayload);
+    }
+  )
+);
 
 export default passport;
