@@ -19,9 +19,9 @@ import passport from './authentication/passport-config';
 
 const app = express();
 
-app.set('views', `${__dirname}/views`);
+app.set('views', `${__dirname}/../frontend/views`);
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/views/public'));
+app.use(express.static(`${__dirname}/../frontend/views/public`));
 
 app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
 app.use(morgan('dev'));
