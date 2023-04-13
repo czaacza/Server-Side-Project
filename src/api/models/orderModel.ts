@@ -1,4 +1,4 @@
-import { Order } from '../../interfaces/Book';
+import { Order } from '../../interfaces/Order';
 import { Schema, model } from 'mongoose';
 
 const orderSchema = new Schema<Order>({
@@ -34,4 +34,4 @@ const orderSchema = new Schema<Order>({
   },
 });
 
-export default model<Order>('Book', orderSchema);
+export default model<Order>('Order', orderSchema);
