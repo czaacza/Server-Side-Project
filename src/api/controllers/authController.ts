@@ -63,7 +63,7 @@ const login = (req: Request, res: Response, next: NextFunction) => {
         email: user.email,
       };
 
-      return res.render('index', { user: req.user });
+      return res.redirect('/');
     });
   })(req, res, next);
 };
