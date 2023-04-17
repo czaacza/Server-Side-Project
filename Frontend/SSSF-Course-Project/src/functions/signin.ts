@@ -19,14 +19,6 @@ export function closeSignin(): void {
   }
 }
 
-function displayLoggedInUser(user: any): void {
-  const appElement = document.querySelector<HTMLDivElement>('#app');
-  if (appElement) {
-    appElement.innerHTML = index(user);
-  }
-  // Add any other necessary actions for logged-in users
-}
-
 export async function submitSigninForm(event: Event): Promise<void> {
   event.preventDefault();
 
@@ -45,10 +37,11 @@ export async function submitSigninForm(event: Event): Promise<void> {
       closeSignin();
       // Set up the logged-in user's screen here, e.g., by displaying the user's name
       console.log('User logged in', result.user);
-      displayLoggedInUser(result.user);
+      location.reload();
     } else {
       // Show an error message to the user, e.g., by displaying it in the signin form
       console.log('Login failed', result.error);
+      location.reload();
       // displaySigninError(result.error);
     }
   }

@@ -73,7 +73,8 @@ const logout = (req: Request, res: Response, next: NextFunction) => {
     if (err) {
       return next(err);
     }
-    res.json({ message: 'successfully logged out' });
+    Logging.info('logged out');
+    res.status(200).redirect('/');
   });
 };
 export { register, login, logout };

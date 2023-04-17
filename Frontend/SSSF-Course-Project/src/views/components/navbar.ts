@@ -29,6 +29,10 @@ export default function navbar(user?: any): string {
       <li class="nav-item active">
         <a class="nav-link" href="#">Contact</a>
       </li>
+      
+      ${
+        user
+          ? `
       <li class="nav-item active">
         <a
           class="nav-link btn btn-account btn-primary"
@@ -37,10 +41,17 @@ export default function navbar(user?: any): string {
           >My account</a
         >
       </li>
+      `
+          : ''
+      }
+
     </ul>
 
     <ul class="navbar-nav navbar-right">
 
+    ${
+      !user
+        ? `
       <li class="nav-item active">
         <a
           class="nav-link btn signin-btn signin-button"
@@ -57,6 +68,9 @@ export default function navbar(user?: any): string {
           >Sign up</a
         >
       </li>
+      `
+        : ''
+    }
 
       ${
         user
@@ -65,7 +79,7 @@ export default function navbar(user?: any): string {
         <a
           class="nav-link btn btn-primary logout-btn"
           id="logout-button"
-          href="/api/auth/logout"
+          href="#"
           >Log out</a
         >
       </li>
