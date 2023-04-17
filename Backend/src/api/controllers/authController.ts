@@ -63,7 +63,7 @@ const login = (req: Request, res: Response, next: NextFunction) => {
         email: user.email,
       };
 
-      return res.redirect('/');
+      return res.status(200).json({ user: userOutput, token });
     });
   })(req, res, next);
 };
@@ -73,8 +73,7 @@ const logout = (req: Request, res: Response, next: NextFunction) => {
     if (err) {
       return next(err);
     }
-    Logging.info('successfully logged out');
-    res.redirect('/');
+    res.json({ message: 'successfully logged out' });
   });
 };
 export { register, login, logout };

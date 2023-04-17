@@ -5,18 +5,21 @@ import products from './products';
 import signin from './signin';
 import testimonials from './testimonials';
 
-const index = `
-    ${navbar}
+export default function index(user?: any): string {
+  const modalHtml = `
+    <div class="overlay"></div>
 
-    ${hero}
+    ${navbar(user)}
 
-    ${popup}
+    ${hero()}
+
+    ${popup()}
     
-    ${signin}
+    ${signin()}
 
-    ${products}
+    ${products()}
 
-    ${testimonials}  
+    ${testimonials()}  
 `;
-
-export default index;
+  return modalHtml;
+}

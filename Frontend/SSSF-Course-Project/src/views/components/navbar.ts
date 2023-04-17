@@ -1,4 +1,5 @@
-const navbar = `
+export default function navbar(user?: any): string {
+  const navbar = `
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/">
     <img src="/img/logo-no-bg-no-text.png" height="50" alt="Responsive image" />
@@ -28,7 +29,6 @@ const navbar = `
       <li class="nav-item active">
         <a class="nav-link" href="#">Contact</a>
       </li>
-      <% if(user){ %>
       <li class="nav-item active">
         <a
           class="nav-link btn btn-account btn-primary"
@@ -37,11 +37,9 @@ const navbar = `
           >My account</a
         >
       </li>
-      <% } %>
     </ul>
 
     <ul class="navbar-nav navbar-right">
-      <% if(!user){ %>
 
       <li class="nav-item active">
         <a
@@ -60,7 +58,9 @@ const navbar = `
         >
       </li>
 
-      <% } else { %>
+      ${
+        user
+          ? `<li class="nav-item active">
       <li class="nav-item active">
         <a
           class="nav-link btn btn-primary logout-btn"
@@ -69,7 +69,9 @@ const navbar = `
           >Log out</a
         >
       </li>
-      <% } %>
+      `
+          : ''
+      }
 
       <li class="nav-item active cart-item">
         <a class="nav-link" href="/cart/"
@@ -92,5 +94,5 @@ const navbar = `
   </div>
 </nav>
 `;
-
-export default navbar;
+  return navbar;
+}

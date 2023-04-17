@@ -2,12 +2,16 @@
 import typescriptLogo from './typescript.svg';
 import viteLogo from '/vite.svg';
 import index from './views/index/index';
+import { initPopupEventListeners } from './functions/popup';
+import { initSigninEventListeners } from './functions/signin';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-    ${index} 
+    ${index()} 
 `;
 
-const addToCartBtn = document.querySelector('.add-to-cart-btn');
-addToCartBtn?.addEventListener('click', () => {
-  console.log('add to cart');
-});
+function initEventListeners(): void {
+  initPopupEventListeners();
+  initSigninEventListeners();
+}
+
+initEventListeners();
