@@ -6,12 +6,14 @@ import { initPopupEventListeners } from './functions/popup';
 import { initSigninEventListeners } from './functions/signin';
 import { getStoredUser } from './auth/auth';
 import { initLogoutEventListener } from './functions/logout';
-import { fetchProducts } from './products/products';
+import { fetchProducts } from './api/products';
+import { initAddToCartButtons } from './functions/cart';
 
 function initEventListeners(): void {
   initPopupEventListeners();
   initSigninEventListeners();
   initLogoutEventListener();
+  initAddToCartButtons();
 }
 
 async function initApp(): Promise<void> {

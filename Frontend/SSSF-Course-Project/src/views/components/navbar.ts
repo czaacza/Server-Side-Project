@@ -89,7 +89,7 @@ export default function navbar(user?: any): string {
 
       <li class="nav-item active cart-item">
         <a class="nav-link" href="/cart/"
-          >Cart
+          >$<span class="cart-total-price">0.00</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
