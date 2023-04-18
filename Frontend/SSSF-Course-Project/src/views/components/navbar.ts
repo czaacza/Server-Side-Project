@@ -1,4 +1,6 @@
 import { Cart } from '../../interfaces/Cart';
+import popup from '../index/popup';
+import signin from '../index/signin';
 
 export default function navbar(user?: any, cart?: Cart): string {
   const navbar = `
@@ -140,6 +142,14 @@ export default function navbar(user?: any, cart?: Cart): string {
     </ul>
   </div>
 </nav>
+
+${popup()}
+    
+${signin()}
+
+<div class="overlay"></div>
+
+
 `;
   return navbar;
 }

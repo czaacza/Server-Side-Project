@@ -13,7 +13,7 @@ import {
   initAddToCartButtons,
   updateCartTotal,
   initCartButtonEventListener,
-} from './functions/cart';
+} from './functions/cartButton';
 
 export function initEventListeners(): void {
   initPopupEventListeners();

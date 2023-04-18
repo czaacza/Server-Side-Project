@@ -7,15 +7,12 @@ import testimonials from './testimonials';
 
 export default function index(user?: any, books?: any, cart?: any): string {
   const modalHtml = `
-    <div class="overlay"></div>
 
     ${navbar(user, cart)}
 
     ${hero()}
 
-    ${popup()}
     
-    ${signin()}
 
     ${products(books)}
 
