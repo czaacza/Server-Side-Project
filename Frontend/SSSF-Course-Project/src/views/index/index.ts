@@ -5,7 +5,7 @@ import products from './products';
 import signin from './signin';
 import testimonials from './testimonials';
 
-export default function index(user?: any): string {
+export default function index(user?: any, books?: any): string {
   const modalHtml = `
     <div class="overlay"></div>
 
@@ -17,7 +17,7 @@ export default function index(user?: any): string {
     
     ${signin()}
 
-    ${products()}
+    ${products(books)}
 
     ${testimonials()}  
 `;
