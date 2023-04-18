@@ -2,31 +2,30 @@
 import typescriptLogo from './typescript.svg';
 import viteLogo from '/vite.svg';
 import index from './views/index/index';
+import cartIndex from './views/cart/cartIndex';
+
 import { initPopupEventListeners } from './functions/popup';
 import { initSigninEventListeners } from './functions/signin';
 import { getStoredUser } from './auth/auth';
 import { initLogoutEventListener } from './functions/logout';
 import { fetchProducts } from './api/products';
-import { initAddToCartButtons } from './functions/cart';
+import {
+  initAddToCartButtons,
+  initCart,
+  initCartButtonEventListener,
+} from './functions/cart';
 
-function initEventListeners(): void {
+export function initEventListeners(): void {
   initPopupEventListeners();
   initSigninEventListeners();
   initLogoutEventListener();
   initAddToCartButtons();
+  initCartButtonEventListener();
 }
 
 async function initApp(): Promise<void> {
-  const storedUser = getStoredUser();
-  const products = await fetchProducts();
-
-  console.log(products);
-
-  document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-      ${index(storedUser, products)} 
-  `;
-
   initEventListeners();
+  initCart();
 }
 
 initApp();

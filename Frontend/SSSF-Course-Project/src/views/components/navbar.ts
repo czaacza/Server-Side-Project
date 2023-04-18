@@ -103,6 +103,10 @@ export default function navbar(user?: any): string {
             />
           </svg>
         </a>
+        <div class="cart-dropdown">
+          <ul class="cart-items-list"></ul>
+          <div class="cart-total">Total: $<span class="cart-total-price">0.00</span></div>
+        </div>
       </li>
     </ul>
   </div>
