@@ -1,4 +1,6 @@
-export default function navbar(user?: any): string {
+import { Cart } from '../../interfaces/Cart';
+
+export default function navbar(user?: any, cart?: Cart): string {
   const navbar = `
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/">
@@ -89,7 +91,9 @@ export default function navbar(user?: any): string {
 
       <li class="nav-item active cart-item">
         <a class="nav-link" href="/cart/"
-          >$<span class="cart-total-price">0.00</span>
+          >$<span class="cart-total-price">
+          ${cart && cart.total ? cart.total.toFixed(2) : '0.00'}
+          </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -104,9 +108,34 @@ export default function navbar(user?: any): string {
           </svg>
         </a>
         <div class="cart-dropdown">
-          <ul class="cart-items-list"></ul>
-          <div class="cart-total">Total: $<span class="cart-total-price">0.00</span></div>
-        </div>
+      <ul class="cart-items-list">
+        ${
+          cart && cart.books && cart.books.length
+            ? cart.books
+                .map((cartItem) => {
+                  const book = cartItem.book;
+                  return `
+                      <li class="cart-item-entry">
+                        <div class="cart-item-image">
+                          <img src="${book.image}" alt="" />
+                        </div>
+                        <div class="cart-item-info">
+                          <div class="cart-item-title">${book.title}</div>
+                          <div class="cart-item-author">${book.author}</div>
+                          <div class="cart-item-quantity">Quantity: ${cartItem.quantity}</div>
+                          <div class="cart-item-price">$${book.price}</div>
+                        </div>
+                      </li>
+                    `;
+                })
+                .join('')
+            : `<li class="cart-item-entry">Your cart is empty</li>`
+        }
+      </ul>
+      <div class="cart-total">Total: $<span class="cart-total-price">
+      ${cart && cart.total ? cart.total.toFixed(2) : '0.00'}
+      </span></div>
+    </div>
       </li>
     </ul>
   </div>

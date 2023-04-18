@@ -1,12 +1,12 @@
 import navbar from '../components/navbar';
 import cartSection from './cartSection';
 
-export default function index(user?: any, books?: any): string {
+export default function index(user?: any, cart?: any): string {
   const modalHtml = `
 
-    ${navbar(user)}
+    ${navbar(user, cart)}
 
-    ${cartSection()}
+    ${cartSection(cart)}
 `;
   return modalHtml;
 }

@@ -6,6 +6,7 @@ interface Cart {
     book: Book;
     quantity: number;
   }[];
+  total: number;
 }
 
 export type { Cart };

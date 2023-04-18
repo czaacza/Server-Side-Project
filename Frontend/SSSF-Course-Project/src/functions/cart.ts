@@ -2,29 +2,24 @@ import { Book } from '../interfaces/Book';
 import { Cart } from '../interfaces/Cart';
 import router from '../router';
 
-function addToCart(book: Book): void {
-  // Get the current cart from the session storage
-  const storedCart = sessionStorage.getItem('cart');
-  const cart: Cart = storedCart ? JSON.parse(storedCart) : { books: [] };
+export function addToCart(book: Book): void {
+  let cart: Cart = getStoredCart() || {
+    books: [],
+    total: 0,
+  };
 
-  // Check if the book already exists in the cart
-  const existingBookIndex = cart.books.findIndex(
-    (cartItem) => cartItem.book._id === book._id
-  );
+  const index = cart.books.findIndex((item) => item.book._id === book._id);
 
-  if (existingBookIndex !== -1) {
-    // Increase the book's quantity
-    cart.books[existingBookIndex].quantity += 1;
+  if (index !== -1) {
+    cart.books[index].quantity += 1;
   } else {
-    // Add the book to the cart with a quantity of 1
     cart.books.push({ book, quantity: 1 });
   }
 
-  // Update the session storage with the new cart
-  sessionStorage.setItem('cart', JSON.stringify(cart));
+  cart.total += book.price;
 
-  // Update the cart's total price
-  updateCartTotal(cart.books);
+  sessionStorage.setItem('cart', JSON.stringify(cart));
+  updateCartTotal();
 }
 
 export function initAddToCartButtons(): void {
@@ -44,54 +39,44 @@ export function initAddToCartButtons(): void {
   });
 }
 
-function updateCartTotal(
-  cartItems: { book: Book | string; quantity: number }[]
-): void {
-  let totalPrice = 0;
+export function updateCartTotal(): void {
+  const storedCart = getStoredCart();
 
-  cartItems.forEach((cartItem) => {
-    if (typeof cartItem.book !== 'string') {
-      totalPrice += cartItem.book.price * cartItem.quantity;
-    }
-  });
-
-  const cartTotalPriceElements =
-    document.querySelectorAll<HTMLElement>('.cart-total-price');
-  if (cartTotalPriceElements) {
+  if (storedCart) {
+    const cartTotalPriceElements =
+      document.querySelectorAll('.cart-total-price');
     cartTotalPriceElements.forEach((element) => {
-      element.innerText = totalPrice.toFixed(2);
+      element.textContent = storedCart.total.toFixed(2);
     });
-  }
 
-  const cartItemsList =
-    document.querySelector<HTMLUListElement>('.cart-items-list');
-  if (cartItemsList) {
-    cartItemsList.innerHTML = '';
-    cartItems.forEach((cartItem) => {
-      if (typeof cartItem.book !== 'string') {
-        cartItemsList.innerHTML += `
-          <li class="cart-item-entry">
-            <img src="${cartItem.book.image}" alt="${cartItem.book.title}" />
-            <div>
-              <strong>${cartItem.book.title}</strong><br />
-              <small>by ${cartItem.book.author}</small>
-              <span>Quantity: ${cartItem.quantity}</span>
-            </div>
-            <span>$${cartItem.book.price.toFixed(2)}</span>
-          </li>
-        `;
-      }
-    });
+    updateDropdownMenu(storedCart);
   }
 }
 
-export function initCart(): void {
-  // Get the current cart from the session storage
-  const storedCart = sessionStorage.getItem('cart');
-  const cart: Cart = storedCart ? JSON.parse(storedCart) : { books: [] };
-
-  // Update the cart's total price
-  updateCartTotal(cart.books);
+function updateDropdownMenu(storedCart: Cart): void {
+  const cartItemsList = document.querySelector('.cart-items-list');
+  if (cartItemsList) {
+    cartItemsList.innerHTML = storedCart.books.length
+      ? storedCart.books
+          .map((cartItem) => {
+            const book = cartItem.book;
+            return `
+              <li class="cart-item-entry">
+                <div class="cart-item-image">
+                  <img src="${book.image}" alt="" />
+                </div>
+                <div class="cart-item-info">
+                  <div class="cart-item-title">${book.title}</div>
+                  <div class="cart-item-author">${book.author}</div>
+                  <div class="cart-item-quantity">Quantity: ${cartItem.quantity}</div>
+                  <div class="cart-item-price">$${book.price}</div>
+                </div>
+              </li>
+            `;
+          })
+          .join('')
+      : `<li class="cart-item-entry">Your cart is empty</li>`;
+  }
 }
 
 export function initCartButtonEventListener(): void {

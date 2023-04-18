@@ -5,7 +5,7 @@ import cartIndex from './views/cart/cartIndex';
 import { getStoredUser } from './auth/auth';
 import { fetchProducts } from './api/products';
 import { initEventListeners } from './main';
-import { getStoredCart } from './functions/cart';
+import { getStoredCart, updateCartTotal } from './functions/cart';
 
 const router = new Navigo('');
 
@@ -15,17 +15,19 @@ router
     const storedUser = getStoredUser();
     const products = await fetchProducts();
     const storedCart = getStoredCart();
+    console.log('storedCart', storedCart);
 
-    contentElement!.innerHTML = index(storedUser, products);
+    contentElement!.innerHTML = index(storedUser, products, storedCart);
     initEventListeners();
   })
 
   .on('/cart', () => {
     const storedUser = getStoredUser();
     const storedCart = getStoredCart();
+    console.log('storedCart', storedCart);
 
     const contentElement = document.querySelector<HTMLDivElement>('#app');
-    contentElement!.innerHTML = cartIndex();
+    contentElement!.innerHTML = cartIndex(storedUser, storedCart);
     initEventListeners();
   })
 

@@ -11,7 +11,7 @@ import { initLogoutEventListener } from './functions/logout';
 import { fetchProducts } from './api/products';
 import {
   initAddToCartButtons,
-  initCart,
+  updateCartTotal,
   initCartButtonEventListener,
 } from './functions/cart';
 
@@ -25,7 +25,7 @@ export function initEventListeners(): void {
 
 async function initApp(): Promise<void> {
   initEventListeners();
-  initCart();
+  updateCartTotal();
 }
 
 initApp();

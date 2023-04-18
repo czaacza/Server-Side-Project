@@ -45,3 +45,18 @@
   font-weight: bold;
   text-align: right;
 }
+
+.cart-item-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.cart-item-author {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.cart-item-quantity {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
