@@ -32,6 +32,7 @@ export async function submitSigninForm(event: Event): Promise<void> {
     const password = passwordInput.value;
 
     const result = await login(username, password);
+    console.log(result);
 
     if (result.success) {
       closeSignin();
@@ -41,9 +42,20 @@ export async function submitSigninForm(event: Event): Promise<void> {
     } else {
       // Show an error message to the user, e.g., by displaying it in the signin form
       console.log('Login failed', result.error);
-      location.reload();
-      // displaySigninError(result.error);
+      displayLoginError();
     }
+  }
+}
+
+function displayLoginError(error: string) {
+  const errorElement = document.getElementById('error-message');
+  if (errorElement) {
+    errorElement.textContent = `Invalid user credentials`;
+    errorElement.classList.add('visible');
+
+    setTimeout(() => {
+      errorElement.classList.remove('visible');
+    }, 3000);
   }
 }
 
