@@ -8,8 +8,10 @@ interface User extends Document {
 }
 
 interface UserOutput {
+  id: string;
   username: string;
   email: string;
+  isAdmin?: boolean;
 }
 
 interface UserLogin {
