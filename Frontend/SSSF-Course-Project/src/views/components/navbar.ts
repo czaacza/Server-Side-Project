@@ -1,6 +1,6 @@
 import { Cart } from '../../interfaces/Cart';
-import popup from '../index/popup';
-import signin from '../index/signin';
+import popup from './popup';
+import signin from './signin';
 
 export default function navbar(user?: any, cart?: Cart): string {
   const navbar = `

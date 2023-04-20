@@ -153,7 +153,7 @@ export default {
         });
       }
 
-      if (user.role !== 'admin') {
+      if (user.isAdmin === false) {
         throw new GraphQLError('Not authorized', {
           extensions: {code: 'NOT_AUTHORIZED'},
         });
@@ -188,7 +188,7 @@ export default {
         });
       }
 
-      if (user.role !== 'admin') {
+      if (user.isAdmin === false) {
         throw new GraphQLError('You are not an admin', {
           extensions: {code: 'NOT_AUTHORIZED'},
         });

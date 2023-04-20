@@ -19,6 +19,7 @@ router
 
     const contentElement = document.querySelector<HTMLDivElement>('#app');
 
+    console.log('storedUser', storedUser);
     console.log('storedCart', storedCart);
 
     contentElement!.innerHTML = index(storedUser, products, storedCart);

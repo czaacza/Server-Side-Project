@@ -17,7 +17,7 @@ interface UserTest {
 interface UserIdWithToken {
   id: string;
   token: string;
-  role: 'admin' | 'user';
+  isAdmin: boolean;
 }
 
 export {User, UserTest, UserIdWithToken};
