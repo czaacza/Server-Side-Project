@@ -47,7 +47,7 @@ export async function submitSigninForm(event: Event): Promise<void> {
   }
 }
 
-function displayLoginError(error: string) {
+function displayLoginError() {
   const errorElement = document.getElementById('error-message');
   if (errorElement) {
     errorElement.textContent = `Invalid user credentials`;

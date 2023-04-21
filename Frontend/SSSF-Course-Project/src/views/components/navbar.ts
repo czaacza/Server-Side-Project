@@ -41,7 +41,7 @@ export default function navbar(user?: any, cart?: Cart): string {
         <a
           class="nav-link btn btn-account btn-primary"
           id="account-button"
-          href="#"
+          href="/account"
           >My account</a
         >
       </li>

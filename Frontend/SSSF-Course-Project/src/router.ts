@@ -7,6 +7,7 @@ import { fetchProducts } from './api/products';
 import { initEventListeners } from './main';
 import { getStoredCart, updateCartTotal } from './functions/cartButton';
 import checkoutIndex from './views/checkout/checkoutIndex';
+import accountIndex from './views/account/accountIndex';
 // import { initQuantityButtonsEventListeners } from './functions/cartPage';
 
 const router = new Navigo('');
@@ -42,6 +43,14 @@ router
     const contentElement = document.querySelector<HTMLDivElement>('#app');
     console.log('user', storedUser);
     contentElement!.innerHTML = checkoutIndex(storedUser, storedCart);
+    initEventListeners();
+  })
+
+  .on('/account', () => {
+    const storedUser = getStoredUser();
+    const contentElement = document.querySelector<HTMLDivElement>('#app');
+    console.log('user', storedUser);
+    contentElement!.innerHTML = accountIndex(storedUser);
     initEventListeners();
   })
 
