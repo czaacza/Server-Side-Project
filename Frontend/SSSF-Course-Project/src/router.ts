@@ -8,27 +8,25 @@ import { initEventListeners } from './main';
 import { getStoredCart, updateCartTotal } from './functions/cartButton';
 import checkoutIndex from './views/checkout/checkoutIndex';
 import accountIndex from './views/account/accountIndex';
-// import { initQuantityButtonsEventListeners } from './functions/cartPage';
 
 const router = new Navigo('');
 
 router
   .on('/', async () => {
-    const storedUser = getStoredUser();
+    const storedUser = await getStoredUser();
     const products = await fetchProducts();
     const storedCart = getStoredCart();
 
     const contentElement = document.querySelector<HTMLDivElement>('#app');
 
     console.log('storedUser', storedUser);
-    console.log('storedCart', storedCart);
 
     contentElement!.innerHTML = index(storedUser, products, storedCart);
     initEventListeners();
   })
 
-  .on('/cart', () => {
-    const storedUser = getStoredUser();
+  .on('/cart', async () => {
+    const storedUser = await getStoredUser();
     const storedCart = getStoredCart();
     // initQuantityButtonsEventListeners();
 
@@ -37,19 +35,17 @@ router
     initEventListeners();
   })
 
-  .on('/checkout', () => {
-    const storedUser = getStoredUser();
+  .on('/checkout', async () => {
+    const storedUser = await getStoredUser();
     const storedCart = getStoredCart();
     const contentElement = document.querySelector<HTMLDivElement>('#app');
-    console.log('user', storedUser);
     contentElement!.innerHTML = checkoutIndex(storedUser, storedCart);
     initEventListeners();
   })
 
-  .on('/account', () => {
-    const storedUser = getStoredUser();
+  .on('/account', async () => {
+    const storedUser = await getStoredUser();
     const contentElement = document.querySelector<HTMLDivElement>('#app');
-    console.log('user', storedUser);
     contentElement!.innerHTML = accountIndex(storedUser);
     initEventListeners();
   })

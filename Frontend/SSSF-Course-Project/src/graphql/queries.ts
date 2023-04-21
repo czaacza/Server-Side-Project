@@ -12,4 +12,19 @@ const loginQuery = `
       }
     `;
 
-export { loginQuery };
+const userByIdQuery = `
+query UserById($userByIdId: ID!) {
+  userById(id: $userByIdId) {
+    id
+    username
+    email
+    details {
+      firstName
+      lastName
+      phone
+    }
+  }
+}
+`;
+
+export { loginQuery, userByIdQuery };

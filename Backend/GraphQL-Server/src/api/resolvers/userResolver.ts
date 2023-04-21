@@ -12,7 +12,6 @@ export default {
         });
       }
       const users = (await response.json()) as User[];
-      console.log('users', users);
       return users;
     },
 
@@ -32,8 +31,6 @@ export default {
       _args: unknown,
       user: UserIdWithToken
     ) => {
-      console.log(user);
-
       const response = await fetch(`${process.env.AUTH_URL}/users/token`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -181,7 +178,6 @@ export default {
       args: {id: string},
       user: UserIdWithToken
     ) => {
-      console.log('user', user);
       if (!user.token) {
         throw new GraphQLError('Not authorized', {
           extensions: {code: 'NOT_AUTHORIZED'},

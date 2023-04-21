@@ -3,6 +3,11 @@ interface User extends Document {
   user_name: string;
   email: string;
   password: string;
+  details?: {
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+  };
 }
 
 interface UserTest {
