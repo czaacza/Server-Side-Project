@@ -119,7 +119,7 @@ export default function navbar(user?: any, cart?: Cart): string {
                   return `
                       <li class="cart-item-entry">
                         <div class="cart-item-image">
-                          <img src="${book.image}" alt="" />
+                          <img src="img/${book.image}" alt="book-image" />
                         </div>
                         <div class="cart-item-info">
                           <div class="cart-item-title">${book.title}</div>
