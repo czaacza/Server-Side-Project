@@ -73,13 +73,19 @@ const register = async (
       throw new CustomError('Could not save user', 500);
     }
 
+    const token = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET as string
+    );
+
     const userOutput: UserOutput = {
       id: savedUser.id,
       username: savedUser.username,
       email: savedUser.email,
     };
 
-    const response: DBMessageResponse = {
+    const response: LoginMessageResponse = {
+      token: token,
       message: 'User created',
       user: userOutput,
     };

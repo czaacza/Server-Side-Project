@@ -68,7 +68,7 @@ export default {
     },
 
     register: async (_parent: unknown, args: {user: User}) => {
-      const response = await fetch(`${process.env.AUTH_URL}/users`, {
+      const response = await fetch(`${process.env.AUTH_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

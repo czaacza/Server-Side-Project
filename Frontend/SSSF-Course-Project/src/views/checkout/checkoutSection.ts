@@ -24,8 +24,6 @@ export default function checkoutSection(user?: User, cart?: any): string {
     })
     .join('');
 
-  const total = cart?.total?.toFixed(2) || '0.00';
-
   const modalHtml = `<section class="checkout-section">
     <div class="container">
       <h2 class="text-center mb-5">Checkout</h2>

@@ -27,4 +27,41 @@ query UserById($userByIdId: ID!) {
 }
 `;
 
-export { loginQuery, userByIdQuery };
+const registerQuery = `
+mutation Register($user: UserInput!) {
+  register(user: $user) {
+    token
+    message
+    user {
+      id
+      username
+      email
+      details {
+        firstName
+        lastName
+        phone
+      }
+    }
+  }
+}
+`;
+
+const updateUserQuery = `
+mutation UpdateUser($user: UserModify) {
+  updateUser(user: $user) {
+    token
+    message
+    user {
+      id
+      username
+      email
+      details {
+        firstName
+        lastName
+        phone
+      }
+    }
+  }
+}`;
+
+export { loginQuery, userByIdQuery, registerQuery, updateUserQuery };
