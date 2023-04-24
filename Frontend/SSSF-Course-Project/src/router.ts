@@ -8,6 +8,7 @@ import { initEventListeners } from './main';
 import { getStoredCart, updateCartTotal } from './functions/cartButton';
 import checkoutIndex from './views/checkout/checkoutIndex';
 import accountIndex from './views/account/accountIndex';
+import { checkIfCheckoutAllowed } from './functions/checkout';
 
 const router = new Navigo('');
 
@@ -36,6 +37,9 @@ router
   })
 
   .on('/checkout', async () => {
+    if (!checkIfCheckoutAllowed()) {
+      router.navigate('/cart');
+    }
     const storedUser = await getStoredUser();
     const storedCart = getStoredCart();
     const contentElement = document.querySelector<HTMLDivElement>('#app');
