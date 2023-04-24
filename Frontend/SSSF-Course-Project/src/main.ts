@@ -5,7 +5,7 @@ import index from './views/index/index';
 import cartIndex from './views/cart/cartIndex';
 
 import { initPopupEventListeners } from './functions/popup';
-import { initSigninEventListeners } from './signin';
+import { initSigninEventListeners } from './functions/signin';
 import { getStoredUser } from './auth/auth';
 import { initLogoutEventListener } from './functions/logout';
 import { fetchProducts } from './api/products';
