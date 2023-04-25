@@ -57,7 +57,7 @@ import { connect } from 'net';
 //   });
 // }
 
-export const initCheckoutButtonEventListeners = () => {
+export const initCartEventListeners = () => {
   document.getElementById('checkout-button')?.addEventListener('click', () => {
     sessionStorage.setItem('checkoutAllowed', 'true');
   });

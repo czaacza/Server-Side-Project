@@ -70,9 +70,13 @@ h2 {
   border-radius: 5px;
 }
 
-.logout-btn {
+.logout-btn,
+.logout-btn:hover,
+.logout-btn:focus,
+.logout-btn:active {
   padding: 14px 28px !important;
-  color: #fff !important;
+  background-color: #f8f9fa !important;
+  color: #061219 !important;
   border-radius: 99999px;
   margin-right: 40px;
 }

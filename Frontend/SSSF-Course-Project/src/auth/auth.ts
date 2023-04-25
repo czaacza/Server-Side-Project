@@ -49,6 +49,7 @@ export async function getStoredUser(): Promise<any> {
           userByIdId: userFromToken.id,
         }
       );
+      console.log(data);
       return data.userById;
     }
   } catch (error) {

@@ -9,6 +9,8 @@ import { getStoredCart, updateCartTotal } from './functions/cartButton';
 import checkoutIndex from './views/checkout/checkoutIndex';
 import accountIndex from './views/account/accountIndex';
 import { checkIfCheckoutAllowed } from './functions/checkout';
+import orderConfirmationIndex from './views/order-confirmation/orderConfirmationIndex';
+import getUserOrders from './api/orders';
 
 const router = new Navigo('');
 
@@ -49,8 +51,24 @@ router
 
   .on('/account', async () => {
     const storedUser = await getStoredUser();
+    const userOrders = await getUserOrders(storedUser);
+    const products = await fetchProducts();
+    const storedCart = getStoredCart();
+
     const contentElement = document.querySelector<HTMLDivElement>('#app');
-    contentElement!.innerHTML = accountIndex(storedUser);
+    contentElement!.innerHTML = accountIndex(
+      storedUser,
+      userOrders,
+      products,
+      storedCart
+    );
+    initEventListeners();
+  })
+
+  .on('/order-confirmation', async () => {
+    const storedUser = await getStoredUser();
+    const contentElement = document.querySelector<HTMLDivElement>('#app');
+    contentElement!.innerHTML = orderConfirmationIndex(storedUser);
     initEventListeners();
   })
 

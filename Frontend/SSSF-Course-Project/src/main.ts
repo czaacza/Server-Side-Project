@@ -15,7 +15,8 @@ import {
   initCartButtonEventListener,
 } from './functions/cartButton';
 import initAccountButtonEventListeners from './functions/accountButton';
-import { initCheckoutButtonEventListeners } from './functions/cartPage';
+import { initCartEventListeners } from './functions/cartPage';
+import { initCheckoutEventListeners } from './functions/checkout';
 
 export function initEventListeners(): void {
   initPopupEventListeners();
@@ -24,7 +25,8 @@ export function initEventListeners(): void {
   initAddToCartButtons();
   initCartButtonEventListener();
   initAccountButtonEventListeners();
-  initCheckoutButtonEventListeners();
+  initCartEventListeners();
+  initCheckoutEventListeners();
 }
 
 async function initApp(): Promise<void> {
