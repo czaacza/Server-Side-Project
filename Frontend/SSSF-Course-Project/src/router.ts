@@ -2,7 +2,7 @@ import Navigo from 'navigo';
 
 import index from './views/index/index';
 import cartIndex from './views/cart/cartIndex';
-import { getStoredUser } from './auth/auth';
+import { getStoredUser } from './api/users';
 import { fetchProducts } from './api/products';
 import { initEventListeners } from './main';
 import { getStoredCart, updateCartTotal } from './functions/cartButton';
@@ -11,6 +11,8 @@ import accountIndex from './views/account/accountIndex';
 import { checkIfCheckoutAllowed } from './functions/checkout';
 import orderConfirmationIndex from './views/order-confirmation/orderConfirmationIndex';
 import getUserOrders from './api/orders';
+import { checkIfAdminAllowed } from './functions/admin';
+import adminIndex from './views/admin/adminIndex';
 
 const router = new Navigo('');
 
@@ -62,6 +64,17 @@ router
       products,
       storedCart
     );
+    initEventListeners();
+  })
+
+  .on('/account/admin', async () => {
+    if (!checkIfAdminAllowed()) {
+      router.navigate('/account');
+    }
+    const storedUser = await getStoredUser();
+    const storedCart = getStoredCart();
+    const contentElement = document.querySelector<HTMLDivElement>('#app');
+    contentElement!.innerHTML = adminIndex(storedUser, storedCart);
     initEventListeners();
   })
 

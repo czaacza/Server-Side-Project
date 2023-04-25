@@ -2,7 +2,11 @@ import { doGraphQLFetch } from '../graphql/fetch';
 import { userOrdersQuery } from '../graphql/queries';
 import { User } from '../interfaces/User';
 
-export default async function getUserOrders(user: User) {
+export default async function getUserOrders(user: User | undefined) {
+  if (!user) {
+    return undefined;
+  }
+
   const token = sessionStorage.getItem('token')?.slice(1, -1);
   if (!token) {
     return undefined;

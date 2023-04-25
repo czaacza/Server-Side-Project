@@ -1,4 +1,4 @@
-import { getStoredUser } from '../auth/auth';
+import { getStoredUser } from '../api/users';
 import { doGraphQLFetch } from '../graphql/fetch';
 import { createOrderQuery } from '../graphql/queries';
 import { Cart } from '../interfaces/Cart';
@@ -10,7 +10,7 @@ export const checkIfCheckoutAllowed = () => {
   if (sessionStorage.getItem('checkoutAllowed') !== 'true') {
     return false;
   } else {
-    // sessionStorage.removeItem('checkoutAllowed');
+    sessionStorage.removeItem('checkoutAllowed');
     return true;
   }
 };

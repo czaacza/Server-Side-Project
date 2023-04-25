@@ -6,7 +6,6 @@ import cartIndex from './views/cart/cartIndex';
 
 import { initPopupEventListeners } from './functions/popup';
 import { initSigninEventListeners } from './functions/signin';
-import { getStoredUser } from './auth/auth';
 import { initLogoutEventListener } from './functions/logout';
 import { fetchProducts } from './api/products';
 import {
@@ -17,6 +16,7 @@ import {
 import initAccountButtonEventListeners from './functions/accountButton';
 import { initCartEventListeners } from './functions/cartPage';
 import { initCheckoutEventListeners } from './functions/checkout';
+import { initAdminEventListeners } from './functions/admin';
 
 export function initEventListeners(): void {
   initPopupEventListeners();
@@ -27,6 +27,7 @@ export function initEventListeners(): void {
   initAccountButtonEventListeners();
   initCartEventListeners();
   initCheckoutEventListeners();
+  initAdminEventListeners();
 }
 
 async function initApp(): Promise<void> {

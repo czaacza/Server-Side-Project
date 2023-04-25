@@ -21,6 +21,16 @@
   padding: 10px 24px !important;
 }
 
+.btn-admin-panel-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.btn-admin-panel {
+  width: 200px;
+}
+
 .success-message {
   display: none;
   position: fixed;

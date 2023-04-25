@@ -1,13 +1,25 @@
+import { isUserAdmin } from '../../api/users';
 import { User } from '../../interfaces/User';
 
 export default function accountSection(user?: User): string {
   const { id, username, email, details } = user || {};
   const { firstName, lastName, phone } = details || {};
 
+  const isAdmin = isUserAdmin(
+    sessionStorage.getItem('token')?.slice(1, -1) || ''
+  );
+
   const modalHtml = `<div class="container account-container">
     <h2 class="text-center mt-3 mb-5">Welcome, <span id="username">${
       firstName || username || 'User'
     }</span>!</h2>
+    <div class="btn-admin-panel-container">
+    ${
+      isAdmin
+        ? '<button class="btn btn-account btn-primary btn-admin-panel" id="btn-admin-panel">Admin panel</button>'
+        : ''
+    }
+    </div>
     <div class="account-row">
       <div class="col-md-6 mt-5">
         <h3>Account Details</h3>
