@@ -11,7 +11,7 @@ import accountIndex from './views/account/accountIndex';
 import { checkIfCheckoutAllowed } from './functions/checkout';
 import orderConfirmationIndex from './views/order-confirmation/orderConfirmationIndex';
 import getUserOrders from './api/orders';
-import { checkIfAdminAllowed } from './functions/admin';
+import { checkIfAdminAllowed, fetchUsers } from './functions/admin';
 import adminIndex from './views/admin/adminIndex';
 
 const router = new Navigo('');
@@ -69,12 +69,13 @@ router
 
   .on('/account/admin', async () => {
     if (!checkIfAdminAllowed()) {
-      router.navigate('/account');
+      // router.navigate('/account');
     }
     const storedUser = await getStoredUser();
     const storedCart = getStoredCart();
+    const users = await fetchUsers();
     const contentElement = document.querySelector<HTMLDivElement>('#app');
-    contentElement!.innerHTML = adminIndex(storedUser, storedCart);
+    contentElement!.innerHTML = adminIndex(storedUser, storedCart, users);
     initEventListeners();
   })
 

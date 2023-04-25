@@ -107,6 +107,21 @@ query OrdersByUser($userId: ID!) {
   }
 }`;
 
+const getUsersQuery = `
+query Users {
+  users {
+    id
+    username
+    email
+    details {
+      firstName
+      lastName
+      phone
+    }
+  }
+}
+`;
+
 export {
   loginQuery,
   userByIdQuery,
@@ -114,4 +129,5 @@ export {
   updateUserQuery,
   createOrderQuery,
   userOrdersQuery,
+  getUsersQuery,
 };
