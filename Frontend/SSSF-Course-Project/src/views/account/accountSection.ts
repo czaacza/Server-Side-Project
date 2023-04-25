@@ -6,7 +6,7 @@ export default function accountSection(user?: User): string {
 
   const modalHtml = `<div class="container account-container">
     <h2 class="text-center mt-3 mb-5">Welcome, <span id="username">${
-      username || 'User'
+      firstName || username || 'User'
     }</span>!</h2>
     <div class="account-row">
       <div class="col-md-6 mt-5">
