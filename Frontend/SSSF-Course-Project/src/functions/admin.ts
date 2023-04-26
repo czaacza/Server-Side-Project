@@ -73,3 +73,88 @@ export const usersClickHandler = (users: User[]) => {
     }
   });
 };
+
+async function updateAdminUser(
+  user: User
+): Promise<{ success: boolean; user?: User; error?: string }> {
+  const token = sessionStorage.getItem('token')?.slice(1, -1);
+
+  if (
+    !user.email ||
+    user.email.indexOf('@') === -1 ||
+    user.email.indexOf('.') === -1
+  ) {
+    return { success: false, error: 'Email is required' };
+  }
+
+  if (!token) {
+    return { success: false, error: 'User not logged in' };
+  }
+
+  const variables = {
+    user: {
+      id: user.id,
+      email: user.email,
+      details: user.details,
+    },
+  };
+
+  const data = await doGraphQLFetch(
+    `${import.meta.env.VITE_GRAPHQL_URL}`,
+    updateUserQuery,
+    variables,
+    token
+  );
+  if (data.updateUser) {
+    return { success: true, user: data.updateUser };
+  }
+  return { success: false, error: 'Update failed. Please try again.' };
+}
+
+export default async function initAdminUserUpdateButtonEventListener() {
+  const updateUserButton = document.querySelector('#btn-update-user');
+
+  updateUserButton?.addEventListener('click', async (event: Event) => {
+    event.preventDefault();
+    const userId =
+      document.querySelector<HTMLInputElement>('#user-id')?.value || '';
+    const username =
+      document.querySelector<HTMLInputElement>('#user-username')?.value || '';
+    const email =
+      document.querySelector<HTMLInputElement>('#user-email')?.value || '';
+    const firstName =
+      document.querySelector<HTMLInputElement>('#user-first-name')?.value || '';
+    const lastName =
+      document.querySelector<HTMLInputElement>('#user-last-name')?.value || '';
+    const phone =
+      document.querySelector<HTMLInputElement>('#user-phone')?.value || '';
+
+    const userToUpdate = {
+      id: userId,
+      username,
+      email,
+      details: {
+        firstName,
+        lastName,
+        phone,
+      },
+    };
+
+    const updateResult = await updateAdminUser(userToUpdate);
+    if (updateResult.success) {
+      showSuccessMessage();
+    } else {
+      showErrorMessage(updateResult.error);
+    }
+  });
+}
+
+function showSuccessMessage() {
+  console.log('success');
+  // Similar to the previous function, show a success message here
+}
+
+function showErrorMessage(error: string | undefined) {
+  console.log('errorq');
+  // Similar to the previous function, show an error message here
+}
