@@ -1,4 +1,3 @@
-import { usersClickHandler } from '../../functions/admin';
 import { Cart } from '../../interfaces/Cart';
 import { User } from '../../interfaces/User';
 import navbar from '../components/navbar';
@@ -8,8 +7,6 @@ export default function index(
   cart?: Cart,
   users?: User[]
 ): string {
-  usersClickHandler(users as User[]);
-
   const modalHtml = `
     ${navbar(adminUser, cart)}
 

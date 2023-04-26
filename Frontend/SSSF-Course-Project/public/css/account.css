@@ -61,6 +61,10 @@
   opacity: 0;
 }
 
+.users-list {
+  cursor: pointer;
+}
+
 .book-info {
   display: flex;
   align-items: flex-start;

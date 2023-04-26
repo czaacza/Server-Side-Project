@@ -11,7 +11,11 @@ import accountIndex from './views/account/accountIndex';
 import { checkIfCheckoutAllowed } from './functions/checkout';
 import orderConfirmationIndex from './views/order-confirmation/orderConfirmationIndex';
 import getUserOrders from './api/orders';
-import { checkIfAdminAllowed, fetchUsers } from './functions/admin';
+import {
+  checkIfAdminAllowed,
+  fetchUsers,
+  usersClickHandler,
+} from './functions/admin';
 import adminIndex from './views/admin/adminIndex';
 
 const router = new Navigo('');
@@ -77,6 +81,7 @@ router
     const contentElement = document.querySelector<HTMLDivElement>('#app');
     contentElement!.innerHTML = adminIndex(storedUser, storedCart, users);
     initEventListeners();
+    usersClickHandler(users);
   })
 
   .on('/order-confirmation', async () => {
