@@ -25,7 +25,7 @@ export default function index(
           <h3>User Details</h3>
           <form id="user-details-form" class="d-none">
             <input type="hidden" id="user-id">
-            <div class="mb-3">
+            <div class="mb-3" id="username-field-container">
               <label for="user-username" class="form-label">Username</label>
               <input type="text" class="form-control" id="user-username" required>
             </div>

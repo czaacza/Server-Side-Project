@@ -141,6 +141,25 @@ mutation UpdateUserAsAdmin($user: UserModify!, $updateUserAsAdminId: ID!) {
 }
 `;
 
+const deleteUserAsAdminQuery = `
+mutation DeleteUserAsAdmin($deleteUserAsAdminId: ID!) {
+  deleteUserAsAdmin(id: $deleteUserAsAdminId) {
+    token
+    message
+    user {
+      id
+      username
+      email
+      details {
+        firstName
+        lastName
+        phone
+      }
+    }
+  }
+}
+`;
+
 export {
   loginQuery,
   userByIdQuery,
@@ -150,4 +169,5 @@ export {
   userOrdersQuery,
   getUsersQuery,
   updateUserAsAdminQuery,
+  deleteUserAsAdminQuery,
 };
