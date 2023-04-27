@@ -122,6 +122,25 @@ query Users {
 }
 `;
 
+const updateUserAsAdminQuery = `
+mutation UpdateUserAsAdmin($user: UserModify!, $updateUserAsAdminId: ID!) {
+  updateUserAsAdmin(user: $user, id: $updateUserAsAdminId) {
+    token
+    message
+    user {
+      id
+      username
+      email
+      details {
+        firstName
+        lastName
+        phone
+      }
+    }
+  }
+}
+`;
+
 export {
   loginQuery,
   userByIdQuery,
@@ -130,4 +149,5 @@ export {
   createOrderQuery,
   userOrdersQuery,
   getUsersQuery,
+  updateUserAsAdminQuery,
 };

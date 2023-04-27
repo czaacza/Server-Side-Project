@@ -12,7 +12,6 @@ export default {
         });
       }
       const users = (await response.json()) as User[];
-      console.log('response:', users);
       return users;
     },
 

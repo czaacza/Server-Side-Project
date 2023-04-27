@@ -14,6 +14,7 @@ import getUserOrders from './api/orders';
 import {
   checkIfAdminAllowed,
   fetchUsers,
+  initSearchUsers,
   usersClickHandler,
 } from './functions/admin';
 import adminIndex from './views/admin/adminIndex';
@@ -80,8 +81,10 @@ router
     const users = await fetchUsers();
     const contentElement = document.querySelector<HTMLDivElement>('#app');
     contentElement!.innerHTML = adminIndex(storedUser, storedCart, users);
+
     initEventListeners();
     usersClickHandler(users);
+    initSearchUsers(users);
   })
 
   .on('/order-confirmation', async () => {

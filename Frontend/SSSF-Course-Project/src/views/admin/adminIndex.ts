@@ -1,3 +1,4 @@
+import { generateUsersList, initSearchUsers } from '../../functions/admin';
 import { Cart } from '../../interfaces/Cart';
 import { User } from '../../interfaces/User';
 import navbar from '../components/navbar';
@@ -18,7 +19,7 @@ export default function index(
           <ul class="list-group users-list">
             ${generateUsersList(users)}
           </ul>
-          <button class="btn btn-primary mt-3" id="btn-add-user">Add New User</button>
+          <button class="btn btn-primary mt-3 btn-squared" id="btn-add-user">Add New User</button>
         </div>
         <div class="col-md-8">
           <h3>User Details</h3>
@@ -44,29 +45,19 @@ export default function index(
               <label for="user-phone" class="form-label">Phone</label>
               <input type="tel" class="form-control" id="user-phone" required>
             </div>
-            <button type="submit" class="btn btn-primary" id="btn-update-user">Update User</button>
-            <button type="button" class="btn btn-danger" id="btn-delete-user">Delete User</button>
+            <button type="submit" class="btn btn-primary btn-squared btn-danger" id="btn-update-user">Update User</button>
+            <button type="button" class="btn btn-danger btn-squared" id="btn-delete-user">Delete User</button>
           </form>
+            <div id="admin-success-message" class="success-message">
+            Profile details updated successfully!
+          </div>
+          <div id="admin-error-message" class="error-message">
+            Error updating profile details. Please try again.
+          </div>  
         </div>
       </div>
     </div>
   `;
 
   return modalHtml;
-}
-
-function generateUsersList(users: User[] | undefined) {
-  if (!users) {
-    return '';
-  }
-
-  return users
-    .map(
-      (user) => `
-        <li class="list-group-item user-list-item" data-user-id="${user.id}">
-          <span class="user-name">${user.username}</span> - <span class="user-email">${user.email}</span>
-        </li>
-      `
-    )
-    .join('');
 }
