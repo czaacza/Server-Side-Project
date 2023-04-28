@@ -29,6 +29,10 @@ export default function index(
               <label for="user-username" class="form-label">Username</label>
               <input type="text" class="form-control" id="user-username" required>
             </div>
+            <div class="mb-3" id="password-field-container">
+              <label for="user-password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="user-password" required>
+            </div>
             <div class="mb-3">
               <label for="user-email" class="form-label">Email</label>
               <input type="email" class="form-control" id="user-email" required>
@@ -47,6 +51,7 @@ export default function index(
             </div>
             <button type="submit" class="btn btn-primary btn-squared btn-danger" id="btn-update-user">Update User</button>
             <button type="button" class="btn btn-danger btn-squared" id="btn-delete-user">Delete User</button>
+            <button type="submit" class="btn btn-primary btn-squared btn-danger" id="btn-add-user-form">Add new User</button>
           </form>
             <div id="admin-success-message" class="success-message">
             Profile details updated successfully!

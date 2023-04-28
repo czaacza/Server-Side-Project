@@ -55,13 +55,7 @@ export const usersClickHandler = (users: User[]) => {
   ) as HTMLFormElement;
 
   const displayUserDetails = (user: User) => {
-    const passwordFieldContainer = document.getElementById(
-      'password-field-container'
-    );
-    if (passwordFieldContainer) {
-      passwordFieldContainer.innerHTML = '';
-    }
-
+    toggleAddUserForm(false);
     userDetailsForm.classList.remove('d-none');
 
     (document.querySelector('#user-id') as HTMLInputElement).value = user.id;
@@ -237,6 +231,7 @@ async function addNewUser(
     variables,
     adminToken
   );
+  console.log(data);
 
   if (data.register && data.register.user) {
     return { success: true, user: data.register.user };
@@ -265,7 +260,7 @@ export const initAddNewUserButton = () => {
   addNewUserButton.addEventListener('click', async () => {
     clearUserDetailsForm();
     userDetailsForm.classList.remove('d-none');
-    togglePasswordField(true); // Show the password field
+    toggleAddUserForm(true); // Show the password field
 
     userDetailsForm.onsubmit = async (event: Event) => {
       event.preventDefault();
@@ -292,14 +287,12 @@ export const initAddNewUserButton = () => {
       const result = await addNewUser(newUser, adminToken);
 
       if (result.success && result.user) {
-        // Show success message and add the new user to the users list
-        showSuccessMessage();
+        showSuccessMessage('User added successfully');
         const usersList = document.querySelector('.users-list') as HTMLElement;
         usersList.innerHTML += generateUserListItem(result.user);
 
-        togglePasswordField(false); // Hide the password field
+        toggleAddUserForm(false);
       } else {
-        // Show error message
         showErrorMessage(result.error);
       }
     };
@@ -401,28 +394,26 @@ function generateUserListItem(user: User): string {
   `;
 }
 
-function togglePasswordField(visible: boolean) {
-  const usernameFieldContainer = document.getElementById(
-    'username-field-container'
-  );
+function toggleAddUserForm(visible: boolean) {
   const passwordFieldContainer = document.getElementById(
     'password-field-container'
   );
+  const addUserFormButton = document.getElementById('btn-add-user-form');
+
+  const updateUserButton = document.getElementById('btn-update-user');
+  const deleteUserButton = document.getElementById('btn-delete-user');
 
   if (visible) {
-    if (!passwordFieldContainer) {
-      const passwordFieldHtml = `
-        <div class="mb-3" id="password-field-container">
-          <label for="user-password" class="form-label">Password</label>
-          <input type="password" class="form-control" id="user-password" required>
-        </div>
-      `;
+    passwordFieldContainer!.style.display = 'block';
+    addUserFormButton!.style.display = 'block';
 
-      usernameFieldContainer?.insertAdjacentHTML('afterend', passwordFieldHtml);
-    }
+    updateUserButton!.style.display = 'none';
+    deleteUserButton!.style.display = 'none';
   } else {
-    if (passwordFieldContainer) {
-      passwordFieldContainer.remove();
-    }
+    passwordFieldContainer!.style.display = 'none';
+    addUserFormButton!.style.display = 'none';
+
+    updateUserButton!.style.display = 'inline-block';
+    deleteUserButton!.style.display = 'inline-block';
   }
 }
