@@ -46,6 +46,25 @@ mutation Register($user: UserInput!) {
 }
 `;
 
+const addUserAsAdminQuery = `
+mutation AddUserAsAdmin($user: AddUserInput!) {
+  addUserAsAdmin(user: $user) {
+    token
+    message
+    user {
+      id
+      username
+      email
+      details {
+        firstName
+        lastName
+        phone
+      }
+    }
+  }
+}
+`;
+
 const updateUserQuery = `
 mutation UpdateUser($user: UserModify) {
   updateUser(user: $user) {
@@ -170,4 +189,5 @@ export {
   getUsersQuery,
   updateUserAsAdminQuery,
   deleteUserAsAdminQuery,
+  addUserAsAdminQuery,
 };

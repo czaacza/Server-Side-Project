@@ -11,12 +11,12 @@ import accountIndex from './views/account/accountIndex';
 import { checkIfCheckoutAllowed } from './functions/checkout';
 import orderConfirmationIndex from './views/order-confirmation/orderConfirmationIndex';
 import getUserOrders from './api/orders';
+import { checkIfAdminAllowed } from './functions/admin';
 import {
-  checkIfAdminAllowed,
   fetchUsers,
   initSearchUsers,
   usersClickHandler,
-} from './functions/admin';
+} from './functions/adminUserPanel';
 import adminIndex from './views/admin/adminIndex';
 
 const router = new Navigo('');
@@ -78,9 +78,15 @@ router
     }
     const storedUser = await getStoredUser();
     const storedCart = getStoredCart();
+    const products = await fetchProducts();
     const users = await fetchUsers();
     const contentElement = document.querySelector<HTMLDivElement>('#app');
-    contentElement!.innerHTML = adminIndex(storedUser, storedCart, users);
+    contentElement!.innerHTML = adminIndex(
+      storedUser,
+      storedCart,
+      products,
+      users
+    );
 
     initEventListeners();
     usersClickHandler(users);
