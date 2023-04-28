@@ -16,29 +16,29 @@ export default function adminProductPanel(books?: Book[]): string {
           <h3>Product Details</h3>
           <form id="product-details-form" class="d-none">
             <input type="hidden" id="product-id">
-            <div class="mb-3" id="productname-field-container">
-              <label for="product-productname" class="form-label">Productname</label>
-              <input type="text" class="form-control" id="product-productname" required>
+            <div class="mb-3" id="title-field-container">
+              <label for="product-title" class="form-label">Title</label>
+              <input type="text" class="form-control" id="product-title" required>
             </div>
             <div class="mb-3" id="password-field-container">
               <label for="product-password" class="form-label">Password</label>
               <input type="password" class="form-control" id="product-password" required>
             </div>
             <div class="mb-3">
-              <label for="product-email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="product-email" required>
+              <label for="product-author" class="form-label">Author</label>
+              <input type="author" class="form-control" id="product-author" required>
             </div>
             <div class="mb-3">
-              <label for="product-first-name" class="form-label">First Name</label>
-              <input type="text" class="form-control" id="product-first-name" required>
+              <label for="product-description" class="form-label">Description</label>
+              <input type="text" class="form-control" id="product-description" required>
             </div>
             <div class="mb-3">
-              <label for="product-last-name" class="form-label">Last Name</label>
-              <input type="text" class="form-control" id="product-last-name" required>
+              <label for="product-price" class="form-label">Price</label>
+              <input type="text" class="form-control" id="product-price" required>
             </div>
             <div class="mb-3">
-              <label for="product-phone" class="form-label">Phone</label>
-              <input type="tel" class="form-control" id="product-phone" required>
+              <label for="product-image" class="form-label">Image</label>
+              <input type="tel" class="form-control" id="product-image" required>
             </div>
             <button type="submit" class="btn btn-primary btn-squared btn-danger" id="btn-update-product">Update Product</button>
             <button type="button" class="btn btn-danger btn-squared" id="btn-delete-product">Delete Product</button>

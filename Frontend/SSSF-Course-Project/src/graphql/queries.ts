@@ -179,6 +179,58 @@ mutation DeleteUserAsAdmin($deleteUserAsAdminId: ID!) {
 }
 `;
 
+const getProductsQuery = `
+query Books {
+  books {
+    id
+    title
+    author
+    description
+    price
+    image
+  }
+}
+`;
+
+const addProductAsAdminQuery = `
+mutation CreateBook($bookInput: BookInput) {
+  createBook(bookInput: $bookInput) {
+    id
+    title
+    author
+    description
+    price
+    image
+  }
+}
+`;
+
+const updateProductAsAdminQuery = `
+mutation UpdateBook($bookModifyInput: BookModifyInput) {
+  updateBook(bookModifyInput: $bookModifyInput) {
+    id
+    title
+    author
+    description
+    price
+    image
+  }
+}
+`;
+
+const deleteProductAsAdminQuery = `
+mutation DeleteBook($deleteBookId: ID!) {
+  deleteBook(id: $deleteBookId) {
+    id
+    title
+    author
+    description
+    price
+    image
+  }
+}
+`;
+
 export {
   loginQuery,
   userByIdQuery,
@@ -190,4 +242,8 @@ export {
   updateUserAsAdminQuery,
   deleteUserAsAdminQuery,
   addUserAsAdminQuery,
+  getProductsQuery,
+  addProductAsAdminQuery,
+  updateProductAsAdminQuery,
+  deleteProductAsAdminQuery,
 };

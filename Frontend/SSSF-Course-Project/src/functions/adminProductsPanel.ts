@@ -5,8 +5,15 @@ import {
   getProductsQuery,
   updateProductAsAdminQuery,
 } from '../graphql/queries';
-import { Product } from '../interfaces/Product';
+import { Book as Product } from '../interfaces/Book';
 import router from '../router';
+import { showErrorMessage, showSuccessMessage } from './admin';
+
+export const initUserSectionEventListeners = (): void => {
+  initAdminProductUpdateButtonEventListener();
+  initDeleteButton();
+  initAddNewProductButton();
+};
 
 export async function fetchProducts() {
   const data = await doGraphQLFetch(
@@ -27,26 +34,25 @@ export const productsClickHandler = (products: Product[]) => {
   ) as HTMLFormElement;
 
   const displayProductDetails = (product: Product) => {
-    toggleAddProductForm(false);
     productDetailsForm.classList.remove('d-none');
 
     (document.querySelector('#product-id') as HTMLInputElement).value =
-      product.id;
-    (document.querySelector('#product-productname') as HTMLInputElement).value =
-      product.productname;
-    (document.querySelector('#product-email') as HTMLInputElement).value =
-      product.email;
-    (document.querySelector('#product-first-name') as HTMLInputElement).value =
-      product.details!.firstName;
-    (document.querySelector('#product-last-name') as HTMLInputElement).value =
-      product.details!.lastName;
-    (document.querySelector('#product-phone') as HTMLInputElement).value =
-      product.details!.phone;
+      product._id;
+    (document.querySelector('#product-title') as HTMLInputElement).value =
+      product.title;
+    (document.querySelector('#product-author') as HTMLInputElement).value =
+      product.author;
+    (document.querySelector('#product-description') as HTMLInputElement).value =
+      product.description;
+    (document.querySelector('#product-price') as HTMLInputElement).value =
+      product.price.toFixed(2).toString();
+    (document.querySelector('#product-image') as HTMLInputElement).value =
+      product.image;
   };
 
   products.forEach((product) => {
     const listItem = document.querySelector(
-      `.product-list-item[data-product-id="${product.id}"]`
+      `.product-list-item[data-product-id="${product._id}"]`
     ) as HTMLElement;
 
     listItem.addEventListener('click', () => {
@@ -58,39 +64,34 @@ export const productsClickHandler = (products: Product[]) => {
 async function updateAdminProduct(
   product: Product
 ): Promise<{ success: boolean; product?: Product; error?: string }> {
-  const token = sessionStorage.getItem('token')?.slice(1, -1);
-
   if (
-    !product.email ||
-    product.email.indexOf('@') === -1 ||
-    product.email.indexOf('.') === -1
+    !product.author ||
+    product.author.indexOf('@') === -1 ||
+    product.author.indexOf('.') === -1
   ) {
     return { success: false, error: 'Email is required' };
   }
 
-  if (!token) {
-    return { success: false, error: 'Product not logged in' };
-  }
-
   const variables = {
-    product: {
-      id: product.id,
-      productname: product.productname,
-      email: product.email,
-      details: product.details,
+    bookModifyInput: {
+      id: product._id,
+      title: product.title,
+      author: product.author,
+      description: product.description,
+      price: product.price,
+      image: product.image,
     },
-    updateProductAsAdminId: product.id,
+    updateProductAsAdminId: product._id,
   };
 
   const data = await doGraphQLFetch(
     `${import.meta.env.VITE_GRAPHQL_URL}`,
     updateProductAsAdminQuery,
-    variables,
-    token
+    variables
   );
   console.log(data);
   if (data) {
-    return { success: true, product: data.updateProduct };
+    return { success: true, product: data.updateBook };
   }
   return { success: false, error: 'Update failed. Please try again.' };
 }
@@ -102,29 +103,25 @@ export default async function initAdminProductUpdateButtonEventListener() {
     event.preventDefault();
     const productId =
       document.querySelector<HTMLInputElement>('#product-id')?.value || '';
-    const productname =
-      document.querySelector<HTMLInputElement>('#product-productname')?.value ||
+    const title =
+      document.querySelector<HTMLInputElement>('#product-title')?.value || '';
+    const author =
+      document.querySelector<HTMLInputElement>('#product-author')?.value || '';
+    const description =
+      document.querySelector<HTMLInputElement>('#product-description')?.value ||
       '';
-    const email =
-      document.querySelector<HTMLInputElement>('#product-email')?.value || '';
-    const firstName =
-      document.querySelector<HTMLInputElement>('#product-first-name')?.value ||
-      '';
-    const lastName =
-      document.querySelector<HTMLInputElement>('#product-last-name')?.value ||
-      '';
-    const phone =
-      document.querySelector<HTMLInputElement>('#product-phone')?.value || '';
+    const price =
+      document.querySelector<HTMLInputElement>('#product-price')?.value || '';
+    const image =
+      document.querySelector<HTMLInputElement>('#product-image')?.value || '';
 
     const productToUpdate = {
-      id: productId,
-      productname,
-      email,
-      details: {
-        firstName,
-        lastName,
-        phone,
-      },
+      _id: productId,
+      title,
+      author,
+      description,
+      price: parseFloat(price),
+      image,
     };
     console.log('productToUpdate', productToUpdate);
 
@@ -138,21 +135,19 @@ export default async function initAdminProductUpdateButtonEventListener() {
 }
 
 async function deleteProductAsAdmin(
-  productId: string,
-  adminToken: string
+  productId: string
 ): Promise<{ success: boolean; error?: string }> {
   const variables = {
-    deleteProductAsAdminId: productId,
+    deleteBookId: productId,
   };
 
   const data = await doGraphQLFetch(
     `${import.meta.env.VITE_GRAPHQL_URL}`,
     deleteProductAsAdminQuery,
-    variables,
-    adminToken
+    variables
   );
 
-  if (data.deleteProductAsAdmin) {
+  if (data.deleteBook) {
     return { success: true };
   } else {
     return {
@@ -163,8 +158,6 @@ async function deleteProductAsAdmin(
 }
 
 export const initDeleteButton = () => {
-  const adminToken = sessionStorage.getItem('token')?.slice(1, -1) || '';
-
   const deleteProductButton = document.querySelector(
     '#btn-delete-product'
   ) as HTMLButtonElement;
@@ -173,7 +166,7 @@ export const initDeleteButton = () => {
     const productId = (
       document.querySelector('#product-id') as HTMLInputElement
     ).value;
-    const result = await deleteProductAsAdmin(productId, adminToken);
+    const result = await deleteProductAsAdmin(productId);
 
     if (result.success) {
       // Show success message and remove product from the list
@@ -195,23 +188,21 @@ export const initDeleteButton = () => {
 };
 
 async function addNewProduct(
-  productInput: any,
-  adminToken: string
+  productInput: any
 ): Promise<{ success: boolean; product?: Product; error?: string }> {
   const variables = {
-    product: productInput,
+    bookInput: productInput,
   };
 
   const data = await doGraphQLFetch(
     `${import.meta.env.VITE_GRAPHQL_URL}`,
     addProductAsAdminQuery,
-    variables,
-    adminToken
+    variables
   );
   console.log('data', data);
 
-  if (data.addProductAsAdmin && data.addProductAsAdmin.product) {
-    return { success: true, product: data.addProductAsAdmin.product };
+  if (data.CreateBook) {
+    return { success: true, product: data.CreateBook };
   } else {
     return {
       success: false,
@@ -238,33 +229,26 @@ export const initAddNewProductButton = () => {
   addNewProductButton.addEventListener('click', async () => {
     clearProductDetailsForm();
     productDetailsForm.classList.remove('d-none');
-    toggleAddProductForm(true); // Show the password field
 
     productDetailsForm.onsubmit = async (event: Event) => {
       event.preventDefault();
 
       const newProduct = {
-        productname: (
-          document.querySelector('#product-productname') as HTMLInputElement
-        ).value,
-        email: (document.querySelector('#product-email') as HTMLInputElement)
+        title: (document.querySelector('#product-title') as HTMLInputElement)
           .value,
-        password: (
-          document.querySelector('#product-password') as HTMLInputElement
+        author: (document.querySelector('#product-author') as HTMLInputElement)
+          .value,
+        description: (
+          document.querySelector('#product-description') as HTMLInputElement
         ).value,
-        details: {
-          firstName: (
-            document.querySelector('#product-first-name') as HTMLInputElement
-          ).value,
-          lastName: (
-            document.querySelector('#product-last-name') as HTMLInputElement
-          ).value,
-          phone: (document.querySelector('#product-phone') as HTMLInputElement)
-            .value,
-        },
+        price: parseFloat(
+          (document.querySelector('#product-price') as HTMLInputElement).value
+        ),
+        image: (document.querySelector('#product-image') as HTMLInputElement)
+          .value,
       };
 
-      const result = await addNewProduct(newProduct, adminToken);
+      const result = await addNewProduct(newProduct);
 
       if (result.success && result.product) {
         showSuccessMessage('Product added successfully');
@@ -272,57 +256,12 @@ export const initAddNewProductButton = () => {
           '.products-list'
         ) as HTMLElement;
         productsList.innerHTML += generateProductListItem(result.product);
-
-        toggleAddProductForm(false);
       } else {
         showErrorMessage(result.error);
       }
     };
   });
 };
-
-function showSuccessMessage(message?: string) {
-  const successElement = document.getElementById('admin-success-message');
-  if (successElement) {
-    if (message) {
-      successElement.innerText = message;
-    }
-    successElement.style.display = 'block';
-    successElement.style.transition = 'opacity 1s';
-    setTimeout(() => {
-      successElement.style.opacity = '1';
-    }, 50);
-
-    setTimeout(() => {
-      successElement.style.opacity = '0';
-      setTimeout(() => {
-        successElement.style.display = 'none';
-      }, 1000);
-    }, 3000);
-  }
-}
-
-function showErrorMessage(error: string | undefined) {
-  const errorElement = document.getElementById('admin-error-message');
-  errorElement!.innerText = error || 'An error occurred';
-
-  console.log(errorElement);
-
-  if (errorElement) {
-    errorElement.style.display = 'block';
-    errorElement.style.transition = 'opacity 1s';
-    setTimeout(() => {
-      errorElement.style.opacity = '1';
-    }, 50);
-
-    setTimeout(() => {
-      errorElement.style.opacity = '0';
-      setTimeout(() => {
-        errorElement.style.display = 'none';
-      }, 1000);
-    }, 3000);
-  }
-}
 
 export function filterProducts(
   products: Product[],
@@ -334,8 +273,8 @@ export function filterProducts(
 
   const filteredProducts = products.filter((product) => {
     return (
-      product.productname.toLowerCase().includes(searchText.toLowerCase()) ||
-      product.email.toLowerCase().includes(searchText.toLowerCase())
+      product.title.toLowerCase().includes(searchText.toLowerCase()) ||
+      product.author.toLowerCase().includes(searchText.toLowerCase())
     );
   });
 
@@ -363,8 +302,8 @@ export function generateProductsList(products: Product[] | undefined) {
   return products
     .map(
       (product) => `
-        <li class="list-group-item product-list-item product-list-item" data-product-id="${product.id}">
-          <span class="product-name">${product.productname}</span> - <span class="product-email">${product.email}</span>
+        <li class="list-group-item product-list-item product-list-item" data-product-id="${product._id}">
+          <span class="product-name">${product.title}</span> - <span class="product-author">${product.author}</span>
         </li>
       `
     )
@@ -373,32 +312,8 @@ export function generateProductsList(products: Product[] | undefined) {
 
 function generateProductListItem(product: Product): string {
   return `
-    <li class="list-group-item product-list-item" data-product-id="${product.id}">
-      <span class="product-name">${product.productname}</span> - <span class="product-email">${product.email}</span>
+    <li class="list-group-item product-list-item" data-product-id="${product._id}">
+      <span class="product-name">${product.title}</span> - <span class="product-author">${product.author}</span>
     </li>
   `;
-}
-
-function toggleAddProductForm(visible: boolean) {
-  const passwordFieldContainer = document.getElementById(
-    'password-field-container'
-  );
-  const addProductFormButton = document.getElementById('btn-add-product-form');
-
-  const updateProductButton = document.getElementById('btn-update-product');
-  const deleteProductButton = document.getElementById('btn-delete-product');
-
-  if (visible) {
-    passwordFieldContainer!.style.display = 'block';
-    addProductFormButton!.style.display = 'block';
-
-    updateProductButton!.style.display = 'none';
-    deleteProductButton!.style.display = 'none';
-  } else {
-    passwordFieldContainer!.style.display = 'none';
-    addProductFormButton!.style.display = 'none';
-
-    updateProductButton!.style.display = 'inline-block';
-    deleteProductButton!.style.display = 'inline-block';
-  }
 }

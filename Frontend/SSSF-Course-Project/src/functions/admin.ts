@@ -1,14 +1,10 @@
 import router from '../router';
-import initAdminUserUpdateButtonEventListener, {
-  initAddNewUserButton,
-  initDeleteButton,
-} from './adminUserPanel';
+import { initUserSectionEventListeners } from './adminUserPanel';
 
 export const initAdminEventListeners = (): void => {
   initAdminButtonEventListener();
-  initAdminUserUpdateButtonEventListener();
-  initDeleteButton();
-  initAddNewUserButton();
+  initUserSectionEventListeners();
+  initUserSectionEventListeners();
 };
 
 export const checkIfAdminAllowed = () => {

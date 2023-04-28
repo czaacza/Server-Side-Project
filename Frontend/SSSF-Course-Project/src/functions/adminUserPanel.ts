@@ -8,6 +8,12 @@ import {
 import { User } from '../interfaces/User';
 import { showErrorMessage, showSuccessMessage } from './admin';
 
+export const initUserSectionEventListeners = (): void => {
+  initAdminUserUpdateButtonEventListener();
+  initDeleteButton();
+  initAddNewUserButton();
+};
+
 export async function fetchUsers() {
   const data = await doGraphQLFetch(
     `${import.meta.env.VITE_GRAPHQL_URL}`,
