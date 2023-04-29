@@ -1,10 +1,11 @@
 import router from '../router';
 import { initUserSectionEventListeners } from './adminUserPanel';
+import { initProductSectionEventListeners } from './adminProductsPanel';
 
 export const initAdminEventListeners = (): void => {
   initAdminButtonEventListener();
   initUserSectionEventListeners();
-  initUserSectionEventListeners();
+  initProductSectionEventListeners();
 };
 
 export const checkIfAdminAllowed = () => {

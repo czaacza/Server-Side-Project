@@ -1,3 +1,4 @@
+import { generateProductsList } from '../../functions/adminProductsPanel';
 import { Book } from '../../interfaces/Book';
 
 export default function adminProductPanel(books?: Book[]): string {
@@ -8,7 +9,7 @@ export default function adminProductPanel(books?: Book[]): string {
           <h3>Products</h3>
           <input type="text" class="form-control mb-3" id="search-products" placeholder="Search products...">
           <ul class="list-group products-list">
-            
+            ${generateProductsList(books)}
           </ul>
           <button class="btn btn-primary mt-3 btn-squared" id="btn-add-product">Add New Product</button>
         </div>
@@ -19,10 +20,6 @@ export default function adminProductPanel(books?: Book[]): string {
             <div class="mb-3" id="title-field-container">
               <label for="product-title" class="form-label">Title</label>
               <input type="text" class="form-control" id="product-title" required>
-            </div>
-            <div class="mb-3" id="password-field-container">
-              <label for="product-password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="product-password" required>
             </div>
             <div class="mb-3">
               <label for="product-author" class="form-label">Author</label>

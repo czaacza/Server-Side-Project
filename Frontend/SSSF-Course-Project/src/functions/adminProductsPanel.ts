@@ -9,24 +9,11 @@ import { Book as Product } from '../interfaces/Book';
 import router from '../router';
 import { showErrorMessage, showSuccessMessage } from './admin';
 
-export const initUserSectionEventListeners = (): void => {
+export const initProductSectionEventListeners = (): void => {
   initAdminProductUpdateButtonEventListener();
   initDeleteButton();
   initAddNewProductButton();
 };
-
-export async function fetchProducts() {
-  const data = await doGraphQLFetch(
-    `${import.meta.env.VITE_GRAPHQL_URL}`,
-    getProductsQuery,
-    {}
-  );
-  if (data && data.products) {
-    return data.products;
-  }
-
-  return undefined;
-}
 
 export const productsClickHandler = (products: Product[]) => {
   const productDetailsForm = document.querySelector(
@@ -37,7 +24,7 @@ export const productsClickHandler = (products: Product[]) => {
     productDetailsForm.classList.remove('d-none');
 
     (document.querySelector('#product-id') as HTMLInputElement).value =
-      product._id;
+      product.id;
     (document.querySelector('#product-title') as HTMLInputElement).value =
       product.title;
     (document.querySelector('#product-author') as HTMLInputElement).value =
@@ -52,10 +39,11 @@ export const productsClickHandler = (products: Product[]) => {
 
   products.forEach((product) => {
     const listItem = document.querySelector(
-      `.product-list-item[data-product-id="${product._id}"]`
+      `.product-list-item[data-product-id="${product.id}"]`
     ) as HTMLElement;
 
     listItem.addEventListener('click', () => {
+      toggleAddProductForm(false);
       displayProductDetails(product);
     });
   });
@@ -64,24 +52,16 @@ export const productsClickHandler = (products: Product[]) => {
 async function updateAdminProduct(
   product: Product
 ): Promise<{ success: boolean; product?: Product; error?: string }> {
-  if (
-    !product.author ||
-    product.author.indexOf('@') === -1 ||
-    product.author.indexOf('.') === -1
-  ) {
-    return { success: false, error: 'Email is required' };
-  }
-
   const variables = {
     bookModifyInput: {
-      id: product._id,
+      id: product.id,
       title: product.title,
       author: product.author,
       description: product.description,
       price: product.price,
       image: product.image,
     },
-    updateProductAsAdminId: product._id,
+    updateProductAsAdminId: product.id,
   };
 
   const data = await doGraphQLFetch(
@@ -89,7 +69,6 @@ async function updateAdminProduct(
     updateProductAsAdminQuery,
     variables
   );
-  console.log(data);
   if (data) {
     return { success: true, product: data.updateBook };
   }
@@ -116,18 +95,17 @@ export default async function initAdminProductUpdateButtonEventListener() {
       document.querySelector<HTMLInputElement>('#product-image')?.value || '';
 
     const productToUpdate = {
-      _id: productId,
+      id: productId,
       title,
       author,
       description,
       price: parseFloat(price),
       image,
     };
-    console.log('productToUpdate', productToUpdate);
 
     const updateResult = await updateAdminProduct(productToUpdate);
     if (updateResult.success) {
-      showSuccessMessage();
+      showSuccessMessage('Product updated successfully');
     } else {
       showErrorMessage(updateResult.error);
     }
@@ -199,27 +177,26 @@ async function addNewProduct(
     addProductAsAdminQuery,
     variables
   );
-  console.log('data', data);
-
-  if (data.CreateBook) {
-    return { success: true, product: data.CreateBook };
+  console.log('dataCreateBook', data);
+  if (data && data.createBook) {
+    return { success: true, product: data.createBook };
   } else {
     return {
       success: false,
-      error:
-        data.register.message || 'Failed to add product. Please try again.',
+      error: 'Failed to add product. Please try again.',
     };
   }
 }
 
 export const initAddNewProductButton = () => {
-  const adminToken = sessionStorage.getItem('token')?.slice(1, -1) || '';
   const addNewProductButton = document.querySelector(
     '#btn-add-product'
   ) as HTMLButtonElement;
   const productDetailsForm = document.querySelector(
     '#product-details-form'
   ) as HTMLFormElement;
+
+  console.log('addNewProductButton', addNewProductButton);
 
   const clearProductDetailsForm = () => {
     productDetailsForm.reset();
@@ -229,6 +206,7 @@ export const initAddNewProductButton = () => {
   addNewProductButton.addEventListener('click', async () => {
     clearProductDetailsForm();
     productDetailsForm.classList.remove('d-none');
+    toggleAddProductForm(true);
 
     productDetailsForm.onsubmit = async (event: Event) => {
       event.preventDefault();
@@ -256,6 +234,7 @@ export const initAddNewProductButton = () => {
           '.products-list'
         ) as HTMLElement;
         productsList.innerHTML += generateProductListItem(result.product);
+        toggleAddProductForm(false);
       } else {
         showErrorMessage(result.error);
       }
@@ -302,7 +281,7 @@ export function generateProductsList(products: Product[] | undefined) {
   return products
     .map(
       (product) => `
-        <li class="list-group-item product-list-item product-list-item" data-product-id="${product._id}">
+        <li class="list-group-item product-list-item product-list-item" data-product-id="${product.id}">
           <span class="product-name">${product.title}</span> - <span class="product-author">${product.author}</span>
         </li>
       `
@@ -312,8 +291,25 @@ export function generateProductsList(products: Product[] | undefined) {
 
 function generateProductListItem(product: Product): string {
   return `
-    <li class="list-group-item product-list-item" data-product-id="${product._id}">
+    <li class="list-group-item product-list-item" data-product-id="${product.id}">
       <span class="product-name">${product.title}</span> - <span class="product-author">${product.author}</span>
     </li>
   `;
+}
+
+function toggleAddProductForm(visible: boolean) {
+  const addProductFormButton = document.getElementById('btn-add-product-form');
+  const updateProductButton = document.getElementById('btn-update-product');
+  const deleteProductButton = document.getElementById('btn-delete-product');
+
+  if (visible) {
+    addProductFormButton!.style.display = 'block';
+
+    updateProductButton!.style.display = 'none';
+    deleteProductButton!.style.display = 'none';
+  } else {
+    addProductFormButton!.style.display = 'none';
+    updateProductButton!.style.display = 'inline-block';
+    deleteProductButton!.style.display = 'inline-block';
+  }
 }

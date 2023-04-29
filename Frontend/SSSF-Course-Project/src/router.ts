@@ -18,6 +18,7 @@ import {
   usersClickHandler,
 } from './functions/adminUserPanel';
 import adminIndex from './views/admin/adminIndex';
+import { productsClickHandler } from './functions/adminProductsPanel';
 
 const router = new Navigo('');
 
@@ -80,7 +81,9 @@ router
     const storedCart = getStoredCart();
     const products = await fetchProducts();
     const users = await fetchUsers();
+
     const contentElement = document.querySelector<HTMLDivElement>('#app');
+
     contentElement!.innerHTML = adminIndex(
       storedUser,
       storedCart,
@@ -90,6 +93,7 @@ router
 
     initEventListeners();
     usersClickHandler(users);
+    productsClickHandler(products);
     initSearchUsers(users);
   })
 
