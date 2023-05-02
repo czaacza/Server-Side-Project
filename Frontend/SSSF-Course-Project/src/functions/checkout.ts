@@ -35,6 +35,10 @@ const handleCheckoutButton = async (user: User, cart: Cart) => {
     console.log('Order created successfully:', order);
     // Redirect to the order confirmation page or show a success message
     router.navigate('/order-confirmation');
+    sendOrderConfirmationEmail(
+      'maticzacza@gmail.com',
+      `siema, ${JSON.stringify(order)}`
+    );
     console.log(order);
   } else {
     console.log('Failed to create the order');
@@ -91,4 +95,27 @@ async function sendCreateOrderMutation(user: User, cart: Cart) {
   }
 
   return data.createOrder;
+}
+
+async function sendOrderConfirmationEmail(
+  userEmail: string,
+  orderDetails: string
+): Promise<void> {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_EMAIL_URL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userEmail, orderDetails }),
+    });
+
+    if (response.ok) {
+      console.log('Email sent successfully.');
+    } else {
+      console.error('Error sending email.');
+    }
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
 }
