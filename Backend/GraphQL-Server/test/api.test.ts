@@ -18,12 +18,21 @@ import {
   deleteBook,
 } from './bookFunctions';
 
+import {
+  getOrder,
+  getOrderByUser,
+  postOrder,
+  putOrder,
+  deleteOrder,
+} from './orderFunctions';
+
 import {UserTest} from '../src/interfaces/User';
 import mongoose from 'mongoose';
 
 import randomstring from 'randomstring';
 import LoginMessageResponse from '../src/interfaces/LoginMessageResponse';
 import {BookTest} from '../src/interfaces/Book';
+import {OrderTest} from '../src/interfaces/Order';
 
 describe('Testing graphql api', () => {
   beforeAll(async () => {
@@ -92,12 +101,32 @@ describe('Testing graphql api', () => {
     await putUserAsAdmin(app, adminData.token!, userData.user.id);
   });
 
-  it('should delete current user', async () => {
-    await deleteUser(app, userData2.token!, userData2.user.id!);
+  let orderData: any;
+
+  const testOrder: OrderTest = {
+    totalPrice: 100,
+    status: 'placed',
+  };
+
+  it('should create an order', async () => {
+    orderData = await postOrder(app, testOrder);
+    console.log('orderData22', orderData);
   });
 
-  it('should delete user as an admin', async () => {
-    await deleteUserAsAdmin(app, adminData.token!, userData.user.id!);
+  it('should get all orders', async () => {
+    await getOrder(app);
+  });
+
+  it('should get a single order', async () => {
+    await getOrderByUser(app);
+  });
+
+  it('should update an order', async () => {
+    await putOrder(app, orderData.id!);
+  });
+
+  it('should delete an order', async () => {
+    await deleteOrder(app, orderData.id!);
   });
 
   // book functions
@@ -128,5 +157,15 @@ describe('Testing graphql api', () => {
 
   it('should delete a book', async () => {
     await deleteBook(app, bookData.id!);
+  });
+
+  // delete users
+
+  it('should delete current user', async () => {
+    await deleteUser(app, userData2.token!, userData2.user.id!);
+  });
+
+  it('should delete user as an admin', async () => {
+    await deleteUserAsAdmin(app, adminData.token!, userData.user.id!);
   });
 });
