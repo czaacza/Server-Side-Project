@@ -1,6 +1,6 @@
 # Server-Side-Project
 
-Full stack e-commerce book store web application made as a part of Server-side Scripting Frameworks course at Metropolia University of Applied Sciences Software Engineering field.
+Full stack e-commerce book store web application made as a part of Server-side Scripting Frameworks course at Metropolia University of Applied Sciences Software Engineering field
 
 ## App stack
 - Node.js
