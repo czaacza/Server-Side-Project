@@ -14,6 +14,20 @@ Full stack e-commerce book store web application made as a part of Server-side S
 - stripe
 - MVC architecture
 
+## how to run the app
+- git clone https://github.com/czaacza/Server-Side-Project
+- open 3 terminals:
+  - cd Backend/Auth-Server && npm i && run dev
+  - cd Backend/GraphQL-Server && npm i && run dev
+  - cd Frontend/SSSF-Course-Project && npm && run dev
+   
+- visit localhost:5137 and enjoy the app
+
+  
+  
+
+
+
 ## Sample screens
 <img src="https://github.com/czaacza/Server-Side-Project/blob/master/img/home.png" height="400" />
 <img src="https://github.com/czaacza/Server-Side-Project/blob/master/img/login.png" height="400" />
