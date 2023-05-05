@@ -21,7 +21,7 @@ Full stack e-commerce book store web application made as a part of Server-side S
   - cd Backend/GraphQL-Server && npm i && run dev
   - cd Frontend/SSSF-Course-Project && npm && run dev
    
-- visit localhost:5137 and enjoy the app
+- visit localhost:5173 and enjoy the app
 
   
   
