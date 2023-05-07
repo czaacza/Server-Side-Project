@@ -137,6 +137,7 @@ async function sendOrderConfirmationEmail(
 export const initStripe = async () => {
   const apiKey =
     'pk_test_51N3HUFADmiYDRA8PnlZPQeVHLulyqHggEeRESAbe2sgtktLf5n95mmHroeBbdW9xr3XdZus3uGRRIhqiKOrbe4eu00TrfI72Xf';
+  c;
   stripe = await loadStripe(apiKey);
   if (stripe) {
     initStripeElements();
