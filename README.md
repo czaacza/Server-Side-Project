@@ -2,6 +2,9 @@
 
 Full stack e-commerce book store web application made as a part of Server-side Scripting Frameworks course at Metropolia University of Applied Sciences Software Engineering field.
 
+## Check out the application here:
+https://ebookery-frontend-production.up.railway.app/
+
 ## App stack
 - Node.js
 - TypeScript
